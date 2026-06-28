@@ -1,0 +1,163 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #F7FAFC;
+  --foreground: #0A2647;
+  --card: #FFFFFF;
+  --card-foreground: #0A2647;
+  --popover: #FFFFFF;
+  --popover-foreground: #0A2647;
+  --primary: #1E73A8;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F2B21A;
+  --secondary-foreground: #0A2647;
+  --muted: #E2E8F0;
+  --muted-foreground: #64748B;
+  --accent: #2CA6C4;
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #CBD5E1;
+  --input: #FFFFFF;
+  --input-background: #FFFFFF;
+  --switch-background: #CBD5E1;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #1E73A8;
+  --radius: 0.75rem;
+  --navy: #0A2647;
+  --blue-gradient-start: #1E73A8;
+  --blue-gradient-end: #2CA6C4;
+  --gold: #F2B21A;
+  --green: #146C43;
+  --teal: #35B0B7;
+}
+
+.dark {
+  --background: #0A0F1E;
+  --foreground: #F7FAFC;
+  --card: #0F1E35;
+  --card-foreground: #F7FAFC;
+  --popover: #0F1E35;
+  --popover-foreground: #F7FAFC;
+  --primary: #2CA6C4;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F2B21A;
+  --secondary-foreground: #0A0F1E;
+  --muted: #1E3A5F;
+  --muted-foreground: #A0AEC0;
+  --accent: #2CA6C4;
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #1E3A5F;
+  --input: #0F1E35;
+  --input-background: #0F1E35;
+  --switch-background: #1E3A5F;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #2CA6C4;
+  --radius: 0.75rem;
+  --navy: #0A2647;
+  --blue-gradient-start: #1E73A8;
+  --blue-gradient-end: #2CA6C4;
+  --gold: #F2B21A;
+  --green: #146C43;
+  --teal: #35B0B7;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-navy: var(--navy);
+  --color-blue-gradient-start: var(--blue-gradient-start);
+  --color-blue-gradient-end: var(--blue-gradient-end);
+  --color-gold: var(--gold);
+  --color-green: var(--green);
+  --color-teal: var(--teal);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
