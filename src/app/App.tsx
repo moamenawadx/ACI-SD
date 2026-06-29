@@ -5,8 +5,8 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { BackToTopButton } from './components/BackToTopButton';
 import { HomePage } from './pages/HomePage';
-import { OrganizingCommitteePage } from './pages/OrganizingCommitteePage';
-import { ScientificCommitteePage } from './pages/ScientificCommitteePage';
+import { RegistrationPage } from './pages/RegistrationPage';
+import { CommitteePage } from './components/CommitteePage';
 
 export default function App() {
   return (
@@ -16,8 +16,8 @@ export default function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/committees/organizing" element={<OrganizingCommitteePage />} />
-            <Route path="/committees/scientific" element={<ScientificCommitteePage />} />
+            <Route path="/register" element={<RegistrationPage />} />
+            <Route path="/committees" element={<CommitteePage />} />
           </Routes>
           <Footer />
           <BackToTopButton />

@@ -2,203 +2,109 @@ export interface CommitteeMember {
   name: string;
   institution: string;
   country: string;
+  role?: string;
+  image?: string;
   email?: string;
 }
 
-export const organizingCommitteeMembers: CommitteeMember[] = [
-  { name: 'Prof. El-Refaie Kenawy', institution: 'Tanta University', country: 'Egypt' },
+export const committeePortrait = '/committee-portrait.svg';
+
+export const leadershipMembers: CommitteeMember[] = [
   {
-    name: 'Prof. Mohamed Abd Al-Raheem Abu Saied',
-    institution: 'City of Scientific Research and Technological Applications (SRTA-City), Alexandria',
-    country: 'Egypt'
+    name: 'Prof. Dr. El-Refaie Kenawy',
+    role: 'Conference Chairman',
+    institution: 'Chairman of the Board of Scientific Society of Chemistry (SSC)',
+    country: 'Egypt',
+    image: committeePortrait
   },
-  { name: 'Prof. Tarek M Mohamed', institution: 'Tanta University', country: 'Egypt' },
-  { name: 'Prof. Adel Nassar', institution: 'Menoufia University', country: 'Egypt' },
+  {
+    name: 'Prof. Dr. Mohamed Morsi El-Gohary',
+    role: 'Honorary Chairman of the Conference',
+    institution: 'President of Borg Al Arab Technological University',
+    country: 'Egypt',
+    image: committeePortrait
+  },
+  {
+    name: 'Prof. Dr. Mohamed Abd Alraheem Abu Saied',
+    role: 'Executive Chair',
+    institution: '',
+    country: 'Egypt',
+    image: committeePortrait
+  }
+];
+
+export const executiveCommitteeMembers: CommitteeMember[] = [
+  {
+    name: 'Prof. Tarek M Mohamed',
+    institution: '',
+    country: 'Egypt',
+    image: committeePortrait
+  },
+  {
+    name: 'Prof. Adel Nassar',
+    institution: '',
+    country: 'Egypt',
+    image: committeePortrait
+  },
   {
     name: 'Prof. Sahar Hassona Hassan El Khalafy',
-    institution: 'Tanta University',
-    country: 'Egypt'
-  },
-  { name: 'Prof. Rachid SALGHI', institution: 'Euromed University, Fes', country: 'Morocco' },
-  { name: 'Prof. Sami Fattouch', institution: 'INSAT, Tunis', country: 'Tunisia' },
-  { name: 'Prof. Alberto Angioni', institution: 'Universita di Cagliari', country: 'Italy' },
-  { name: 'Dr. Michelangelo Anastasiades', institution: 'Chemisches, Stuttgart', country: 'Germany' }
+    institution: '',
+    country: 'Egypt',
+    image: committeePortrait
+  }
+];
+
+export const organizingCommitteeMembers: CommitteeMember[] = [
+  { name: 'Prof. Ibrahim Al-Fahham', institution: '', country: '', image: committeePortrait },
+  { name: 'Prof. Alaa Arafa Badr', institution: '', country: '', image: committeePortrait },
+  { name: 'Prof. Mohamed Ramadan', institution: '', country: '', image: committeePortrait },
+  { name: 'Prof. Rachid SALGHI', institution: 'Euromed University, Fes', country: 'Morocco', image: committeePortrait },
+  { name: 'Prof. Sami Fattouch', institution: 'INSAT, Tunis', country: 'Tunisia', image: committeePortrait },
+  { name: 'Prof. Alberto Angioni', institution: 'Universita di Cagliari', country: 'Italy', image: committeePortrait }
 ];
 
 export const scientificCommitteeMembers: CommitteeMember[] = [
-  { name: 'Prof. Hussein Darwish', institution: 'National Research Centre', country: 'Egypt' },
-  { name: 'Prof. Mohamed Mostafa Elsayed', institution: 'Alexandria University', country: 'Egypt' },
-  { name: 'Prof. Said salama Moselhy', institution: 'Ain shams university', country: 'Egypt' },
-  { name: 'Prof. Abdalziz fatouh', institution: 'Mansura university', country: 'Egypt' },
-  { name: 'Prof. Ibrahim Tantawy', institution: 'Monofia University', country: 'Egypt' },
-  { name: 'Prof. Zakaria A el khanate', institution: 'National Research Centre', country: 'Egypt' },
-  { name: 'Prof. Soha M Hamdy', institution: 'Fayoum University', country: 'Egypt' },
-  {
-    name: 'Prof. Dr. Ahmed H. Moustafa',
-    institution: 'Zagazig University',
-    country: 'Egypt',
-    email: 'ah_hu_mostafa@yahoo.com'
-  },
-  {
-    name: 'Prof. Dr. Magdy A. Ibrahim',
-    institution: 'Ain Shams University',
-    country: 'Egypt',
-    email: 'magdy_ahmed1977@yahoo.com'
-  },
-  {
-    name: 'Prof. Dr. Aly A. Aly',
-    institution: 'Benha University',
-    country: 'Egypt',
-    email: 'aly.maboudaly@fsc.bu.edu.eg'
-  },
-  { name: 'Prof. Nafissa Soudani', institution: 'University Mohamed Khider of Biskra', country: 'Algeria' },
-  { name: 'Dr. Mohamed Bouezmarni', institution: 'Belgian development agency', country: 'Belgium' },
-  { name: 'Dr. Amir Bertone Gebara', institution: 'Instituto Biologico', country: 'Brazil' },
-  { name: 'Dr. Claudia Ciscato', institution: 'Instituto Biologico', country: 'Brazil' },
-  { name: 'Prof. Jean Marc Chovelon', institution: 'IUT Lyon 1', country: 'France' },
-  {
-    name: 'Prof. Michel Couderchet',
-    institution: 'Universite de Reims Champagne-Ardenne, Reims',
-    country: 'France'
-  },
-  {
-    name: 'Prof. Urania Menkissoglu-Spiroudi',
-    institution: 'Aristotle University of Thessaloniki',
-    country: 'Greece'
-  },
-  {
-    name: 'Prof. Ntalli Nikoletta',
-    institution: 'Aristotle University of Thessaloniki',
-    country: 'Greece'
-  },
-  { name: 'Prof. Zsofia KOVACS', institution: 'University of Pannonia, Veszprem', country: 'Hungary' },
-  { name: 'Prof. Mariateresa Russo', institution: 'University of Reggio Calabria', country: 'Italy' },
-  { name: 'Prof. Alessandro Atzei', institution: 'University of Cagliari', country: 'Italy' },
-  { name: 'Dr. Ashraf Al Hawamdeh', institution: 'National FAO/IPM', country: 'Jordan' },
-  { name: 'Dr. Mamoun Albakri', institution: 'Ministry of Agriculture', country: 'Jordan' },
-  { name: 'Prof. Ahmad El Moll', institution: 'Lebanese University', country: 'Lebanon' },
-  { name: 'Dr. Ali Amin Kafu', institution: 'Biotechnology Research Center, Tripoli', country: 'Libya' },
-  { name: 'Dr. Fauzi A. Bisheya', institution: 'Agricultural Research center, Tripoli', country: 'Libya' },
-  {
-    name: 'Prof. Mohamad Amran B. Mohd Salleh',
-    institution: 'University Putra',
-    country: 'Malaysia'
-  },
-  {
-    name: 'Dr. Shivendu Ranjan',
-    institution: 'Indian Institute of Technology, Kanpur (IITK)',
-    country: 'India'
-  },
-  {
-    name: 'Dr. Nandita Dasgupta',
-    institution: 'Institute of Engineering and Technology',
-    country: 'India'
-  },
-  {
-    name: 'Dr. VELISCO NATALIA',
-    institution: 'Dimitre Cantemir State University, Chisinau',
-    country: 'Moldova'
-  },
-  {
-    name: 'Igor CRETESCU',
-    institution: 'Ghorghe Asachi Technical University of Iasi',
-    country: 'Romania'
-  },
-  {
-    name: 'Prof. Abderrahim Hormatallah',
-    institution: "IAV Hassan II, Complexe Horticole d'Ait Melloul",
-    country: 'Morocco'
-  },
-  { name: 'Dr. Mohamed Ayoub', institution: 'Green Solutions, Agadir', country: 'Morocco' },
-  {
-    name: 'Dr. Agnieszka Popenda',
-    institution: 'Czestochowa University of Technology',
-    country: 'Poland'
-  },
-  {
-    name: 'Dr. Slawomir Kalinowski',
-    institution: 'Warmia and Mazury University in Olsztyn',
-    country: 'Poland'
-  },
-  { name: 'Dr. Sara Cunha', institution: 'University of Porto', country: 'Portugal' },
-  {
-    name: 'Dr. J. (Koos) F. van Staden',
-    institution: 'Process Analytical Technology Laboratory',
-    country: 'Romania'
-  },
-  {
-    name: 'Dr. Ionela Daniela Morariu',
-    institution: 'University of Medicine and Pharmacy, Iasi',
-    country: 'Romania'
-  },
-  {
-    name: 'Dr. Bassam S. Tawabini',
-    institution: 'King Fahd University of Petroleum & Minerals',
-    country: 'Saudi Arabia'
-  },
-  {
-    name: 'Prof. Angel Montoya Baides',
-    institution: 'Universitat Politecnica de Valencia',
-    country: 'Spain'
-  },
-  { name: 'Dr. Ana Aguilera', institution: 'University of Almeria, 04071-Almeria', country: 'Spain' },
-  { name: 'Prof. Lazic Sanja', institution: 'University of Novi Sad', country: 'Serbia' },
-  {
-    name: 'Prof. Slavica Vukovic',
-    institution: 'University of Novi Sad, Faculty of Agriculture, Novi Sad',
-    country: 'Serbia'
-  },
-  {
-    name: 'Dr. Azhari Omer Abdelbagi Mohamed',
-    institution: 'Ministry of Higher Education & Scientific Research, Khartoum',
-    country: 'Sudan'
-  },
-  { name: 'Dr. Asma Laarif', institution: 'IRESA, Chott Mariem, Sousse', country: 'Tunisia' },
-  {
-    name: 'Prof. Osman Tiryaki',
-    institution: 'Canakkale Onsekiz Mart University',
-    country: 'Turkey'
-  },
-  { name: 'Dr. Ummuhan Kaya', institution: 'TUV AUSTRIA TURK, Izmir', country: 'Turkey' },
-  {
-    name: 'Prof. Abdelelah Mohamed Elhassan',
-    institution: 'Al Safwa Feasibility Studies & Consultancy, Sharjah',
-    country: 'United Arab Emirates'
-  },
-  { name: 'Prof. Manar Mfarrej', institution: 'University of Abu Dhabi', country: 'United Arab Emirates' },
-  { name: 'Prof. Parvez I Haris', institution: 'De Montfort University', country: 'United Kingdom' },
-  { name: 'Prof. Djilani G. Amara', institution: 'El Oued University', country: 'Algeria' },
-  { name: 'Prof. Nizar BELLAKHAL', institution: '', country: 'Tunisia' },
-  { name: 'Dr. Faouzia Haffari', institution: 'University of Mostaganem', country: 'Algeria' },
-  { name: 'Prof. Majdeddin Al Ghadban', institution: 'Sabratha University', country: 'Libya' },
-  {
-    name: 'Prof. Yasser KHADRA',
-    institution: 'Ministry of Higher Education and Scientific Research',
-    country: 'Syria'
-  },
-  {
-    name: 'Prof. Halim Hammi',
-    institution: 'National Centre of Research in Materials Science (CNRSM)',
-    country: 'Tunisia',
-    email: 'halimhammi2015@gmail.com'
-  },
-  { name: 'Prof. Hamza Hammadi', institution: 'Arid Regions Institute', country: 'Tunisia' },
-  {
-    name: 'Prof. Khalil Abdelrazek Khalil Abdelmawgoud',
-    institution: 'University of Sharjah',
-    country: 'United Arab Emirates'
-  },
-  { name: 'Prof. Nasser Aly Mohamed Barakat', institution: 'King Faisal University', country: 'Saudi Arabia' },
-  { name: 'Prof. Sakina Mohamed Ahmed Yagi', institution: 'University of Khartoum', country: 'Sudan' },
-  {
-    name: 'Prof. Hichem BEN JANNET',
-    institution: 'University of Monastir',
-    country: 'Tunisia',
-    email: 'hichem.bjannet@gmail.com'
-  },
-  {
-    name: 'Prof. Mounir FERHI',
-    institution: 'National Research Center in Materials Sciences',
-    country: 'Tunisia'
-  }
+  { name: 'Prof. Qusay F. Alsalhy', institution: '', country: '', image: committeePortrait },
+  { name: 'Prof. Urania Menkissoglu-Spiroudi', institution: 'Aristotle University of Thessaloniki', country: 'Greece', image: committeePortrait },
+  { name: 'Prof. Hussein Darwish', institution: 'National Research Centre', country: 'Egypt', image: committeePortrait },
+  { name: 'Prof. Alessandro Atzei', institution: 'University of Cagliari', country: 'Italy', image: committeePortrait },
+  { name: 'Prof. Mohamed Mostafa Elsayed', institution: 'Alexandria University', country: 'Egypt', image: committeePortrait },
+  { name: 'Prof. Parvez I Haris', institution: 'De Montfort University', country: 'United Kingdom', image: committeePortrait },
+  { name: 'Prof. Said Salama Moselhy', institution: 'Ain Shams University', country: 'Egypt', image: committeePortrait },
+  { name: 'Prof. Osman Tiryaki', institution: 'Canakkale Onsekiz Mart University', country: 'Turkey', image: committeePortrait },
+  { name: 'Prof. Abdalziz Fatouh', institution: 'Mansura University', country: 'Egypt', image: committeePortrait },
+  { name: 'Prof. Angel Montoya Baides', institution: 'Universitat Politecnica de Valencia', country: 'Spain', image: committeePortrait },
+  { name: 'Prof. Ibrahim Tantawy', institution: 'Monofia University', country: 'Egypt', image: committeePortrait },
+  { name: 'Dr. Sara Cunha', institution: 'University of Porto', country: 'Portugal', image: committeePortrait },
+  { name: 'Prof. Zakaria A. El Khanate', institution: 'National Research Centre', country: 'Egypt', image: committeePortrait },
+  { name: 'Dr. Agnieszka Popenda', institution: 'Czestochowa University of Technology', country: 'Poland', image: committeePortrait },
+  { name: 'Prof. Soha M Hamdy', institution: 'Fayoum University', country: 'Egypt', image: committeePortrait },
+  { name: 'Dr. Mohamed Bouezmarni', institution: 'Belgian Development Agency', country: 'Belgium', image: committeePortrait },
+  { name: 'Prof. Dr. Ahmed H. Moustafa', institution: 'Zagazig University', country: 'Egypt', image: committeePortrait },
+  { name: 'Dr. Amir Bertone Gebara', institution: 'Instituto Biologico', country: 'Brazil', image: committeePortrait },
+  { name: 'Prof. Dr. Magdy A. Ibrahim', institution: 'Ain Shams University', country: 'Egypt', image: committeePortrait },
+  { name: 'Prof. Dr. Aly A. Aly', institution: 'Benha University', country: 'Egypt', image: committeePortrait },
+  { name: 'Prof. Jean Marc Chovelon', institution: 'IUT Lyon 1', country: 'France', image: committeePortrait },
+  { name: 'Prof. Antonio Valverde', institution: '', country: '', image: committeePortrait },
+  { name: 'Prof. Ntalli Nikoletta', institution: 'Aristotle University of Thessaloniki', country: 'Greece', image: committeePortrait },
+  { name: 'Prof. Abderrahim Hormatallah', institution: "IAV Hassan II, Complexe Horticole d'Ait Melloul", country: 'Morocco', image: committeePortrait },
+  { name: 'Prof. Zsofia Kovacs', institution: 'University of Pannonia, Veszprem', country: 'Hungary', image: committeePortrait },
+  { name: 'Prof. Nafissa Soudani', institution: 'University Mohamed Khider of Biskra', country: 'Algeria', image: committeePortrait },
+  { name: 'Prof. Mariateresa Russo', institution: 'University of Reggio Calabria', country: 'Italy', image: committeePortrait },
+  { name: 'Prof. Khaoula Toumi', institution: '', country: '', image: committeePortrait },
+  { name: 'Prof. Mohamad Amran', institution: 'University Putra', country: 'Malaysia', image: committeePortrait },
+  { name: 'Prof. Faouzia Haffari', institution: 'University of Mostaganem', country: 'Algeria', image: committeePortrait },
+  { name: 'Dr. Shivendu Ranjan', institution: 'Indian Institute of Technology, Kanpur (IITK)', country: 'India', image: committeePortrait },
+  { name: 'Prof. Manar Fawzi Bani Mfarrej', institution: 'University of Abu Dhabi', country: 'United Arab Emirates', image: committeePortrait },
+  { name: 'Prof. Ahmad Elmoll', institution: 'Lebanese University', country: 'Lebanon', image: committeePortrait },
+  { name: 'Prof. Djilani G. Amara', institution: 'El Oued University', country: 'Algeria', image: committeePortrait },
+  { name: 'Prof. Mekhadmi Nour Elhouda', institution: '', country: '', image: committeePortrait },
+  { name: 'Prof. Majdeddin Al Ghadban', institution: 'Sabratha University', country: 'Libya', image: committeePortrait },
+  { name: 'Prof. Yasser Khadra', institution: 'Ministry of Higher Education and Scientific Research', country: 'Syria', image: committeePortrait },
+  { name: 'Prof. Hamza Hammadi', institution: 'Arid Regions Institute', country: 'Tunisia', image: committeePortrait },
+  { name: 'Prof. Halim Hammi', institution: 'National Centre of Research in Materials Science (CNRSM)', country: 'Tunisia', image: committeePortrait },
+  { name: 'Prof. Mounir Ferhi', institution: 'National Research Center in Materials Sciences', country: 'Tunisia', image: committeePortrait },
+  { name: 'Prof. Khalil Abdelrazek Khalil', institution: 'University of Sharjah', country: 'United Arab Emirates', image: committeePortrait },
+  { name: 'Prof. Sakina Mohamed Ahmed', institution: 'University of Khartoum', country: 'Sudan', image: committeePortrait },
+  { name: 'Prof. Nasser Barakat', institution: 'King Faisal University', country: 'Saudi Arabia', image: committeePortrait }
 ];

@@ -86,6 +86,10 @@ export function Topics() {
         {
           enTitle: 'Nanomaterials, Nanoscale Design, and Nano-enabled Systems',
           arTitle: 'المواد النانوية والتصميم على المقياس النانوي والأنظمة المعتمدة على النانو',
+        },
+        {
+          enTitle: 'Nanotechnology for Sustainable Agriculture and Plant Protection',
+          arTitle: 'تكنولوجيا النانو من أجل الزراعة المستدامة وحماية النباتات',
         }
       ]
     },
@@ -128,12 +132,28 @@ export function Topics() {
           arTitle: 'الابتكار في الكيمياء الزراعية والزراعة المستدامة',
         },
         {
-          enTitle: 'Environmental Fate, Toxicology, and Risk Assessment',
-          arTitle: 'المصير البيئي والسمية وتقييم المخاطر',
+          enTitle: 'Smart and Precision Agriculture Systems',
+          arTitle: 'أنظمة الزراعة الذكية والدقيقة',
+        },
+        {
+          enTitle: 'AI Applications in Crop Monitoring and Agricultural Management',
+          arTitle: 'تطبيقات الذكاء الاصطناعي في مراقبة المحاصيل والإدارة الزراعية',
+        },
+        {
+          enTitle: 'Plant Bioactive Compounds, Functional Biomolecules, and Agro-biotechnology',
+          arTitle: 'المركبات النشطة بيولوجيًا والجزيئات الوظيفية والتكنولوجيا الحيوية الزراعية',
         },
         {
           enTitle: 'Integrated and Eco-friendly Agricultural Practices',
           arTitle: 'الممارسات الزراعية المتكاملة والصديقة للبيئة',
+        },
+        {
+          enTitle: 'Environmental Fate, Toxicology, and Risk Assessment',
+          arTitle: 'المصير البيئي والسمية وتقييم المخاطر',
+        },
+        {
+          enTitle: 'Innovation and Entrepreneurship in Agri-food Technologies',
+          arTitle: 'الابتكار وريادة الأعمال في تقنيات الأغذية الزراعية',
         }
       ]
     },

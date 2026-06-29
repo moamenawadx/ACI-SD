@@ -1,5 +1,5 @@
 import { useLanguage } from '../contexts/LanguageContext';
-import { Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router';
 
 export function Footer() {
@@ -9,9 +9,12 @@ export function Footer() {
     { label: t('home'), href: '/#home', isRoute: false },
     { label: t('about'), href: '/#about', isRoute: false },
     { label: t('topics'), href: '/#topics', isRoute: false },
-    { label: t('organizingCommitteeNav'), href: '/committees/organizing', isRoute: true },
-    { label: t('scientificCommitteeNav'), href: '/committees/scientific', isRoute: true },
-    { label: t('registration'), href: '/#registration', isRoute: false }
+    { label: t('abstract'), href: '/#abstract', isRoute: false },
+    { label: t('committee'), href: '/committees', isRoute: true },
+    { label: t('dates_title'), href: '/#dates', isRoute: false },
+    { label: t('registration'), href: '/#registration', isRoute: false },
+    { label: t('venue'), href: '/#venue', isRoute: false },
+    { label: t('contact'), href: '/#contact', isRoute: false }
   ];
 
   return (
@@ -57,11 +60,15 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-[#2CA6C4] flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">sci.s.o.chemistry@gmail.com</span>
+                <a href="mailto:sci.s.o.chemistry@gmail.com" className="text-gray-400 text-sm hover:text-[#2CA6C4] transition-colors">sci.s.o.chemistry@gmail.com</a>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#2CA6C4] flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400 text-sm">Hurghada, Egypt</span>
+                <span className="text-gray-400 text-sm">Sharm El-Sheikh, Egypt</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-[#2CA6C4] flex-shrink-0 mt-0.5" />
+                <a href="tel:+201091898891" className="text-gray-400 text-sm hover:text-[#2CA6C4] transition-colors" dir="ltr">+20 109 189 8891</a>
               </li>
             </ul>
           </div>

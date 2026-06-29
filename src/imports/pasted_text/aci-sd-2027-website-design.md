@@ -3,7 +3,7 @@ Design a premium, modern, academic conference website UI for:
 ACI-SD 2027
 1st International Conference on Advancing Chemistry and Innovation Towards Sustainable Development
 &
-11th International Symposium of Mediterranean Group on Pesticide Research (MGPR)
+11th International Symposium of Mediterranean Group on Pesticide Research
 
 🌐 BILINGUAL REQUIREMENTS (Arabic + English):
 
@@ -70,7 +70,7 @@ Subtle animated-style molecular/nanotech pattern
 ACI-SD 2027 logo centered
 Conference full title (bilingual)
 Date: 27–30 January 2027 | يناير ٢٠٢٧
-Location: Hurghada, Egypt | الغردقة، مصر
+Location: Sharm El-Sheikh, Egypt | شرم الشيخ، مصر
 CTA Buttons:
 "Submit Abstract" (cyan)
 "Register Now" (gold)
@@ -83,7 +83,7 @@ Right: 4 highlight stat cards with glow:
 🌍 International Conference
 🧪 8 Research Topics
 👨‍🔬 50+ Speakers
-🏛️ Hurghada, Egypt
+🏛️ Sharm El-Sheikh, Egypt
 4️⃣ MAIN TOPICS SECTION
 
 Section title: "Conference Topics" / "محاور المؤتمر"
@@ -148,8 +148,8 @@ CTA: "Register Now" gold button
 9️⃣ VENUE SECTION
 
 Title: "Venue" / "مكان الانعقاد"
-Full-width image banner (Hurghada corniche)
-Text overlay: Hotel on the Corniche, Hurghada, Egypt
+Full-width image banner (Sharm El-Sheikh corniche)
+Text overlay: Hotel on the Corniche, Sharm El-Sheikh, Egypt
 Professional tour mention card
 Language: English is official conference language
 🔟 FOOTER

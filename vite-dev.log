@@ -1,0 +1,117 @@
+
+> @figma/my-make-file@0.0.1 dev
+> vite --host 127.0.0.1
+
+
+  [32m[1mVITE[22m v6.3.5[39m  [2mready in [0m[1m427[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[2m٥:٤٥:٥٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Committee.tsx, /src/styles/index.css[22m
+[2m٥:٤٥:٥٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٤٦:٣٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٥:٤٦:٥٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٥:٤٦:٥٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٤٧:٠٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٤٧:٠٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/app/contexts/LanguageContext.tsx[22m Could not Fast Refresh ("useLanguage" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m٥:٤٧:٠٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css, /src/app/components/Footer.tsx, /src/app/components/Navbar.tsx, /src/app/components/BackToTopButton.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteePage.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\About.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Committee.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Venue.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Registration.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Topics.tsx[22m
+[2m٥:٥٢:١٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m٥:٥٢:٣٥ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٥:٥٨:٢١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteePage.tsx, /src/styles/index.css[22m
+[2m٥:٥٨:٢١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/pages/OrganizingCommitteePage.tsx, /src/styles/index.css[22m
+[2m٥:٥٨:٢١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/pages/ScientificCommitteePage.tsx, /src/styles/index.css[22m
+[2m٦:٠٩:١٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteeMemberCard.tsx, /src/styles/index.css[22m
+[2m٦:٠٩:١٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteePage.tsx, /src/styles/index.css[22m
+[2m٦:١٠:٠٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٦:١٩:٣٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Venue.tsx, /src/styles/index.css[22m
+[2m٦:١٩:٣٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:١٩:٤٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:٢٠:٣٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:٢٠:٣٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:٢٠:٤١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٦:٢١:٤٨ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٦:٢٢:٣٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Venue.tsx, /src/styles/index.css[22m
+[2m٦:٢٣:٢٨ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٤:٤٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٤:٤٨ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٥:١٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٥:٢٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٥:٤٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٥:٥١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٦:٠٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٣٢:١٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:٣٢:٢٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:٣٢:٥٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Registration.tsx, /src/styles/index.css[22m
+[2m٦:٣٦:١١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /src/styles/index.css[22m
+[2m٦:٣٦:١٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:٣٦:٢٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٦:٣٨:١٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /src/styles/index.css[22m
+[2m٦:٣٨:١٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /src/styles/index.css[22m
+[2m٦:٣٨:٣٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /src/styles/index.css[22m
+[2m٦:٤٠:٠٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /src/styles/index.css[22m
+[2m٦:٤٠:١٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /src/styles/index.css[22m
+[2m٦:٤٠:١٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /src/styles/index.css[22m
+[2m٧:٢١:٠٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m٧:٢١:١٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٧:٢٤:٤٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٧:٢٤:٤٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Registration.tsx, /src/styles/index.css[22m
+[2m٣:٥٦:٤٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css, /src/app/pages/OrganizingCommitteePage.tsx, /src/app/pages/ScientificCommitteePage.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Committee.tsx[22m
+[2m٣:٥٧:٠٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteeMemberCard.tsx, /src/styles/index.css[22m
+[2m٣:٥٧:٣١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteePage.tsx, /src/styles/index.css[22m
+[2m٣:٥٧:٤٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Navbar.tsx, /src/styles/index.css[22m
+[2m٣:٥٨:٢١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m٣:٥٨:٢٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css[22m
+[2m٣:٥٨:٣١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/pages/OrganizingCommitteePage.tsx, /src/styles/index.css[22m
+[2m٣:٥٨:٣١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/pages/ScientificCommitteePage.tsx, /src/styles/index.css[22m
+[2m٤:٢٢:١٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\About.tsx, /src/styles/index.css[22m
+[2m٤:٢٢:٣٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٤:٢٢:٣٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/app/contexts/LanguageContext.tsx[22m Could not Fast Refresh ("useLanguage" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m٤:٢٢:٣٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css, /src/app/components/Footer.tsx, /src/app/components/Navbar.tsx, /src/app/components/BackToTopButton.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteePage.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\About.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Committee.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Venue.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Registration.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Topics.tsx, /src/app/pages/RegistrationPage.tsx[22m
+[2m٤:٢٣:٠١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٤:٢٣:٠١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/app/contexts/LanguageContext.tsx[22m Could not Fast Refresh ("useLanguage" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m٤:٢٣:٠١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/App.tsx, /src/styles/index.css, /src/app/components/Footer.tsx, /src/app/components/Navbar.tsx, /src/app/components/BackToTopButton.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CommitteePage.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\About.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Committee.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\ImportantDates.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Venue.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Registration.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Topics.tsx, /src/app/pages/RegistrationPage.tsx[22m
+[2m٤:٢٣:١٥ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٢٣:١٥ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css, /src/app/pages/HomePage.tsx[22m
+[2m٤:٢٣:٢١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٢٣:٢٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٢٣:٤٥ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\About.tsx, /src/styles/index.css[22m
+[2m٤:٣٤:٥٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٥:٣٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٥:٣٥ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٥:٣٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٤:٣٦:٤٥ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٤:٣٨:١٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٨:٢٨ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٨:٣٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٨:٣٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٨:٥١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٩:٠٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٩:٠٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٣٩:١٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Hero.tsx, /src/styles/index.css[22m
+[2m٤:٤٢:٥١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٤:٤٣:٠٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٤:٤٣:١٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Topics.tsx, /src/styles/index.css[22m
+[2m٤:٤٣:٢٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Topics.tsx, /src/styles/index.css[22m
+[2m٤:٤٣:٢٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/index.css, /@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\registration\RegistrationWizard.tsx[22m
+[2m٥:٠٥:٤١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٠٥:٤٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٠٦:٠٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /src/styles/index.css[22m
+[2m٥:٠٦:١٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /src/styles/index.css[22m
+[2m٥:٢٨:٢٤ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٨:٢٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٨:٣٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٨:٤٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٨:٥٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٨:٥٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٩:٠٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٩:٠٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٩:١٦ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٢٩:٢٥ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/contexts/LanguageContext.tsx, /src/styles/index.css[22m
+[2m٥:٣٠:٢٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\Registration.tsx, /src/styles/index.css[22m
+[2m٦:١٠:٠٨ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:١٧:٤٧ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٢٧:٢٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /src/styles/index.css[22m
+[2m٦:٤٣:٢٢ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٤٤:٢٩ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٤٥:١٣ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/app/components/Footer.tsx, /src/styles/index.css[22m
+[2m٦:٤٩:٥٠ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /src/styles/index.css[22m
+[2m٦:٤٩:٥١ م[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/@fs/D:\SSC Website Project\ACI-SD Project\src\app\components\CallForAbstracts.tsx, /src/styles/index.css[22m

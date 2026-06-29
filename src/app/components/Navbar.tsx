@@ -1,17 +1,13 @@
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { ChevronDown, Globe, Moon, Sun } from 'lucide-react';
-import { Link } from 'react-router';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from './ui/dropdown-menu';
+import { Globe, Moon, Sun } from 'lucide-react';
+import { Link, useLocation } from 'react-router';
+import { cn } from './ui/utils';
 
 export function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const { pathname } = useLocation();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
@@ -27,32 +23,19 @@ export function Navbar() {
             <a href="/#home" className="text-foreground hover:text-primary transition-colors">{t('home')}</a>
             <a href="/#about" className="text-foreground hover:text-primary transition-colors">{t('about')}</a>
             <a href="/#topics" className="text-foreground hover:text-primary transition-colors">{t('topics')}</a>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="inline-flex items-center gap-1 text-foreground hover:text-primary transition-colors outline-none">
-                  <span>{t('committee')}</span>
-                  <ChevronDown className="h-4 w-4" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align={language === 'ar' ? 'end' : 'start'}
-                className="min-w-52 border-border bg-card/95 backdrop-blur-xl"
-              >
-                <DropdownMenuItem asChild>
-                  <Link to="/committees/organizing" className="cursor-pointer">
-                    {t('organizingCommitteeNav')}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/committees/scientific" className="cursor-pointer">
-                    {t('scientificCommitteeNav')}
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <a
+              href="/committees"
+              className={cn(
+                'text-foreground hover:text-primary transition-colors',
+                pathname.startsWith('/committees') && 'text-primary'
+              )}
+            >
+              {t('committee')}
+            </a>
             <a href="/#abstract" className="text-foreground hover:text-primary transition-colors">{t('abstract')}</a>
             <a href="/#dates" className="text-foreground hover:text-primary transition-colors">{t('dates_title')}</a>
             <a href="/#registration" className="text-foreground hover:text-primary transition-colors">{t('registration')}</a>
+            <a href="/#venue" className="text-foreground hover:text-primary transition-colors">{t('venue')}</a>
             <a href="/#contact" className="text-foreground hover:text-primary transition-colors">{t('contact')}</a>
           </div>
 

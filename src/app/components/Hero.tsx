@@ -1,8 +1,9 @@
 import { useLanguage } from '../contexts/LanguageContext';
 import { Calendar, MapPin } from 'lucide-react';
-import heroBackground from '../../imports/hurghada-egypt.png';
+import heroBackground from '../../imports/sharm-el-sheikh.png';
 import sscLogo from '../../imports/SSC logo.png';
 import batuLogo from '../../imports/BATU.png';
+import mgprLogo from '../../imports/MGPR.png';
 
 export function Hero() {
   const { t } = useLanguage();
@@ -23,22 +24,27 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="mb-8">
-          <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-10 mb-8">
+        <div className="mb-6">
+          <img
+            src="/ACI-SD.png"
+            alt="ACI-SD 2027"
+            className="h-25 md:h-30 w-auto object-contain drop-shadow-2xl mx-auto mb-6"
+          />
+          <div className="flex items-center justify-center gap-4 sm:gap-6 md:gap-10 mb-6">
             <img
               src={sscLogo}
               alt="SSC logo"
-              className="h-32 md:h-40 w-auto object-contain drop-shadow-2xl"
-            />
-            <img
-              src="/ACI-SD.png"
-              alt="ACI-SD 2027"
-              className="h-32 md:h-40 w-auto object-contain drop-shadow-2xl"
+              className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-2xl"
             />
             <img
               src={batuLogo}
               alt="BATU logo"
-              className="h-32 md:h-40 w-auto object-contain drop-shadow-2xl"
+              className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-2xl"
+            />
+            <img
+              src={mgprLogo}
+              alt="Mediterranean Group of Pesticide Research logo"
+              className="h-16 sm:h-20 md:h-24 w-auto object-contain drop-shadow-2xl"
             />
           </div>
           <p className="text-xl md:text-2xl text-foreground font-semibold mb-4 leading-relaxed max-w-4xl mx-auto drop-shadow-lg">
@@ -49,7 +55,7 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-6">
           <div className="flex items-center gap-2 text-foreground">
             <Calendar className="w-5 h-5 text-primary" />
             <span className="text-lg">{t('hero_date')}</span>
@@ -60,21 +66,27 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10">
-            <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-[#1E73A8] to-[#2CA6C4] text-white font-medium hover:shadow-2xl hover:shadow-[#2CA6C4]/40 transition-all duration-300 transform hover:scale-105">
-            {t('submitAbstract')}
-          </button>
-          <button className="px-8 py-4 rounded-xl bg-[#F2B21A] text-[#0A0F1E] font-medium hover:shadow-2xl hover:shadow-[#F2B21A]/40 transition-all duration-300 transform hover:scale-105">
-            {t('registerNow')}
-          </button>
-        </div>
+        <a
+          href={t('hero_discount_url')}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block max-w-9xl mx-auto mb-5 group"
+        >
+          <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm border border-white/20 dark:border-white/10 rounded-xl px-6 py-4 shadow-lg group-hover:bg-white/20 dark:group-hover:bg-white/10 group-hover:border-primary/50 group-hover:shadow-xl group-hover:scale-[1.02] transition-all duration-300">
+            <p className="text-base md:text-lg text-foreground font-medium leading-relaxed">
+              {t('hero_discount_text')}
+            </p>
+          </div>
+        </a>
 
-        <div className="mt-16 flex items-center justify-center gap-8 opacity-60">
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-3 opacity-80">
           <div className="text-sm text-muted-foreground">{t('organized_by')}</div>
-          <div className="h-8 w-px bg-border" />
+          <div className="h-6 w-px bg-border" />
           <div className="text-sm font-medium text-foreground">Scientific Society of Chemistry</div>
-          <div className="h-8 w-px bg-border" />
-          <div className="text-sm font-medium text-foreground">MGPR</div>
+          <div className="h-6 w-px bg-border" />
+          <div className="text-sm font-medium text-foreground">Borg Al Arab Technological University</div>
+          <div className="h-6 w-px bg-border" />
+          <div className="text-sm font-medium text-foreground">Mediterranean Group of Pesticide Research</div>
         </div>
       </div>
     </section>

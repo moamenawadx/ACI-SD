@@ -1,0 +1,19 @@
+[2m٤:٢٣:١٥ م[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../../imports/hurghada-egypt.png" from "src/app/components/Hero.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mD:/SSC Website Project/ACI-SD Project/src/app/components/Hero.tsx[39m:3:27
+[33m  18 |  import { useLanguage } from "../contexts/LanguageContext";
+  19 |  import { Calendar, MapPin } from "lucide-react";
+  20 |  import heroBackground from "../../imports/hurghada-egypt.png";
+     |                              ^
+  21 |  import sscLogo from "../../imports/SSC logo.png";
+  22 |  import batuLogo from "../../imports/BATU.png";[39m
+      at TransformPluginContext._formatLog (file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 5)
+      at async TransformPluginContext.transform (file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///D:/SSC%20Website%20Project/ACI-SD%20Project/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
