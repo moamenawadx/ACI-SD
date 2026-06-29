@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { Link } from 'react-router';
 import { useLanguage } from '../contexts/LanguageContext';
 import {
   GraduationCap,
@@ -361,12 +362,12 @@ export function Registration() {
         </div>
 
         <div className="text-center">
-          <a
-            href="/register"
+          <Link
+            to="/register"
             className="inline-block px-10 py-4 rounded-xl bg-[#F2B21A] text-[#0A0F1E] font-semibold text-lg hover:shadow-2xl hover:shadow-[#F2B21A]/30 transition-all duration-300 transform hover:scale-105"
           >
             {t('registerNow')}
-          </a>
+          </Link>
         </div>
       </div>
     </section>
