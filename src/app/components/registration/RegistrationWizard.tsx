@@ -1,12 +1,13 @@
 import { useState, useCallback, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Loader2, AlertTriangle, Copy } from 'lucide-react';
 import type { RegistrationFormData } from '../../types/registration';
 import { initialFormData, stepLabels } from '../../types/registration';
-import { TextInput, SelectInput, RadioGroup, CheckboxField, TextArea, CountrySelect, PhoneInput, DatePicker, FileUpload } from './FormFields';
+import { TextInput, SelectInput, RadioGroup, CheckboxField, TextArea, CountrySelect, PhoneInput, DatePicker } from './FormFields';
 import {
-  titles, genders, attendanceModes, participationTypes, presentationTypes,
-  conferenceTopics, roomTypes, registrationCategories, paymentMethods, countries
+  titles, genders, attendanceModes, participationTypes,
+  conferenceTopics, roomTypes, registrationCategories, countries
 } from '../../types/registration';
+import { submitRegistration, RegistrationError } from '../../../services/registrationService';
 
 function ProgressBar({ current, total }: { current: number; total: number }) {
   const percent = ((current) / (total - 1)) * 100;
@@ -203,6 +204,8 @@ function Step3ContactInfo({ data, update, errors }: StepProps) {
           label="WhatsApp"
           value={data.whatsapp}
           onChange={(v) => update({ whatsapp: v })}
+          error={errors.whatsapp}
+          required
         />
         <div className="sm:col-span-2">
           <TextArea
@@ -210,8 +213,6 @@ function Step3ContactInfo({ data, update, errors }: StepProps) {
             placeholder="Enter your full postal address"
             value={data.postalAddress}
             onChange={(e) => update({ postalAddress: e.target.value })}
-            error={errors.postalAddress}
-            required
           />
         </div>
       </div>
@@ -241,15 +242,6 @@ function Step4Participation({ data, update, errors }: StepProps) {
             value={data.participationType}
             onChange={(e) => update({ participationType: e.target.value })}
             error={errors.participationType}
-            required
-          />
-          <SelectInput
-            label="Presentation Type"
-            options={presentationTypes}
-            placeholder="Select presentation type"
-            value={data.presentationType}
-            onChange={(e) => update({ presentationType: e.target.value })}
-            error={errors.presentationType}
             required
           />
         </div>
@@ -510,7 +502,6 @@ function Step7ReviewSubmit({ data, update, errors }: StepProps) {
         <ReviewSection title="Participation">
           <ReviewRow label="Attendance Mode" value={data.attendanceMode} />
           <ReviewRow label="Participation Type" value={data.participationType} />
-          <ReviewRow label="Presentation Type" value={data.presentationType} />
           <ReviewRow label="Paper Title" value={data.paperTitle} />
           <ReviewRow label="Conference Topic" value={data.conferenceTopic === 'Other' ? data.conferenceTopicOther : data.conferenceTopic} />
         </ReviewSection>
@@ -529,15 +520,6 @@ function Step7ReviewSubmit({ data, update, errors }: StepProps) {
             <ReviewRow label="Invitation Letter" value={data.invitationLetter} />
             <ReviewRow label="Visa Support Letter" value={data.visaSupportLetter} />
             <ReviewRow label="Other Requirements" value={data.otherRequirements} />
-          </ReviewSection>
-
-          <ReviewSection title="Payment">
-            <ReviewRow label="Registration Category" value={data.registrationCategory} />
-            <ReviewRow label="Payment Method" value={data.paymentMethod} />
-            <ReviewRow label="Amount Paid" value={data.amountPaid} />
-            <ReviewRow label="Payment Date" value={data.paymentDate} />
-            <ReviewRow label="Transaction Reference" value={data.transactionReference} />
-            <ReviewRow label="Receipt" value={data.receiptFile ? data.receiptFile.name : null} />
           </ReviewSection>
         </div>
 
@@ -585,13 +567,16 @@ function validateStep(step: number, data: RegistrationFormData): Record<string, 
       } else if (!/^[\d\s+()-]{7,20}$/.test(data.mobilePhone)) {
         errors.mobilePhone = 'Invalid phone number';
       }
-      if (!data.postalAddress.trim()) errors.postalAddress = 'Postal address is required';
+      if (!data.whatsapp.trim()) {
+        errors.whatsapp = 'WhatsApp is required';
+      } else if (!/^[\d\s+()-]{7,20}$/.test(data.whatsapp)) {
+        errors.whatsapp = 'Invalid WhatsApp number';
+      }
       break;
     }
     case 3: {
       if (!data.attendanceMode) errors.attendanceMode = 'Attendance mode is required';
       if (!data.participationType) errors.participationType = 'Participation type is required';
-      if (!data.presentationType) errors.presentationType = 'Presentation type is required';
       if (!data.conferenceTopic) errors.conferenceTopic = 'Conference topic is required';
       if (data.conferenceTopic === 'Other' && !data.conferenceTopicOther.trim()) {
         errors.conferenceTopicOther = 'Please specify your topic';
@@ -602,15 +587,6 @@ function validateStep(step: number, data: RegistrationFormData): Record<string, 
       break;
     }
     case 5: {
-      if (!data.registrationCategory) errors.registrationCategory = 'Registration category is required';
-      if (!data.paymentMethod) errors.paymentMethod = 'Payment method is required';
-      if (!data.amountPaid.trim()) errors.amountPaid = 'Amount is required';
-      if (!data.paymentDate) errors.paymentDate = 'Payment date is required';
-      if (!data.transactionReference.trim()) errors.transactionReference = 'Transaction reference is required';
-      if (!data.receiptFile) errors.receiptFile = 'Receipt is required';
-      break;
-    }
-    case 6: {
       if (!data.agreeDeclaration) errors.agreeDeclaration = 'You must agree to proceed';
       break;
     }
@@ -624,6 +600,9 @@ export function RegistrationWizard() {
   const [data, setData] = useState<RegistrationFormData>({ ...initialFormData });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [registrationId, setRegistrationId] = useState<string | null>(null);
 
   const update = useCallback((patch: Partial<RegistrationFormData>) => {
     setData((prev) => ({ ...prev, ...patch }));
@@ -637,7 +616,7 @@ export function RegistrationWizard() {
   const currentErrors = useMemo(() => validateStep(step, data), [step, data]);
 
   const canProceed = useMemo(() => {
-    if (step === 6) return true;
+    if (step === 5) return true;
     return Object.keys(currentErrors).length === 0;
   }, [step, currentErrors]);
 
@@ -645,7 +624,7 @@ export function RegistrationWizard() {
     const errs = validateStep(step, data);
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    setStep((s) => Math.min(s + 1, 6));
+    setStep((s) => Math.min(s + 1, 5));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -655,14 +634,27 @@ export function RegistrationWizard() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSubmit = () => {
-    const errs = validateStep(6, data);
+  const handleSubmit = async () => {
+    const errs = validateStep(5, data);
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    console.log('=== Registration Form Data ===');
-    console.log(JSON.stringify(data, null, 2));
-    console.log('Receipt file:', data.receiptFile);
-    setSubmitted(true);
+
+    setSubmitting(true);
+    setSubmissionError(null);
+
+    try {
+      const result = await submitRegistration(data);
+      setRegistrationId(result.id);
+      setSubmitted(true);
+    } catch (err) {
+      if (err instanceof RegistrationError) {
+        setSubmissionError(err.message);
+      } else {
+        setSubmissionError('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleEdit = (s: number) => {
@@ -678,24 +670,38 @@ export function RegistrationWizard() {
           <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
         </div>
         <h3 className="text-2xl font-bold text-foreground mb-3">Registration Submitted Successfully</h3>
-        <p className="text-muted-foreground leading-relaxed max-w-md mx-auto">
-          Thank you for registering. Your data has been received. You will receive a confirmation email shortly.
+        <p className="text-muted-foreground leading-relaxed max-w-md mx-auto mb-8">
+          Thank you for registering. Your data has been received. Please save your registration ID for future reference.
         </p>
+
+        {registrationId && (
+          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-muted border border-border">
+            <span className="text-xs font-mono font-bold text-foreground tracking-wider select-all">
+              {registrationId}
+            </span>
+            <button
+              onClick={() => navigator.clipboard.writeText(registrationId!)}
+              className="p-1.5 rounded-lg hover:bg-card transition-colors text-muted-foreground hover:text-foreground"
+              title="Copy ID"
+            >
+              <Copy className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <ProgressBar current={step} total={7} />
+      <ProgressBar current={step} total={6} />
 
       {step === 0 && <Step1PersonalInfo data={data} update={update} errors={errors} />}
       {step === 1 && <Step2Affiliation data={data} update={update} errors={errors} />}
       {step === 2 && <Step3ContactInfo data={data} update={update} errors={errors} />}
       {step === 3 && <Step4Participation data={data} update={update} errors={errors} />}
       {step === 4 && <Step5AccommodationTravel data={data} update={update} errors={errors} />}
-      {step === 5 && <Step6Payment data={data} update={update} errors={errors} />}
-      {step === 6 && <Step7ReviewSubmit data={data} update={update} errors={errors} />}
+      {step === 5 && <Step7ReviewSubmit data={data} update={update} errors={errors} />}
 
       <div className="flex items-center justify-between gap-4">
         {step > 0 ? (
@@ -710,7 +716,7 @@ export function RegistrationWizard() {
           <div />
         )}
 
-        {step < 6 ? (
+        {step < 5 ? (
           <button
             onClick={handleNext}
             className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-[#1E73A8] to-[#2CA6C4] text-white font-medium hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
@@ -720,20 +726,36 @@ export function RegistrationWizard() {
             <ChevronRight className="w-4 h-4" />
           </button>
         ) : (
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => handleEdit(0)}
-              className="px-6 py-3 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all text-sm"
-            >
-              Edit All
-            </button>
-            <button
-              onClick={handleSubmit}
-              className="px-8 py-3 rounded-xl bg-[#F2B21A] text-[#0A0F1E] font-semibold hover:shadow-lg hover:shadow-[#F2B21A]/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              disabled={!data.agreeDeclaration}
-            >
-              Submit Registration
-            </button>
+          <div className="flex flex-col items-end gap-3">
+            {submissionError && (
+              <div className="flex items-start gap-2 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-sm text-red-700 dark:text-red-400 max-w-md">
+                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>{submissionError}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => handleEdit(0)}
+                className="px-6 py-3 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                disabled={submitting}
+              >
+                Edit All
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-[#F2B21A] text-[#0A0F1E] font-semibold hover:shadow-lg hover:shadow-[#F2B21A]/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                disabled={!data.agreeDeclaration || submitting}
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit Registration'
+                )}
+              </button>
+            </div>
           </div>
         )}
       </div>

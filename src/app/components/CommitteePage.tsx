@@ -97,17 +97,19 @@ export function CommitteePage() {
               <div className="h-px flex-1 max-w-24 bg-gradient-to-l from-transparent to-border" />
             </div>
 
-            <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-              {section.members.map((member) => (
-                <CommitteeMemberCard
-                  key={`${member.name}-${sectionIndex}`}
-                  image={member.image}
-                  name={member.name}
-                  role={member.role}
-                  institution={member.institution}
-                  country={member.country}
-                />
-              ))}
+            <div className="mx-auto max-w-5xl">
+              <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
+                {section.members.map((member) => (
+                  <CommitteeMemberCard
+                    key={`${member.name}-${sectionIndex}`}
+                    image={member.image}
+                    name={member.name}
+                    role={member.role}
+                    institution={member.institution}
+                    country={member.country}
+                  />
+                ))}
+              </div>
             </div>
           </section>
         ))}

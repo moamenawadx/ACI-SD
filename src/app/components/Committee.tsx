@@ -1,10 +1,10 @@
 import { useLanguage } from '../contexts/LanguageContext';
 import type { ReactNode } from 'react';
-import { Users } from 'lucide-react';
+import { Users, Crown } from 'lucide-react';
 import { CommitteeMemberCard } from './CommitteeMemberCard';
 import {
+  leadershipMembers,
   executiveCommitteeMembers,
-  organizingCommitteeMembers
 } from '../data/committees';
 
 export function Committee() {
@@ -13,15 +13,15 @@ export function Committee() {
   const text = {
     en: {
       intro:
-        'The conference features dedicated organizing and scientific committees, each with a distinct role in delivering academic excellence and operational quality.',
+        'The conference is led by distinguished experts driving scientific excellence and strategic direction.',
+      leadershipTitle: 'Conference Leadership',
       executiveTitle: 'The Executive Committees',
-      organizingTitle: 'The Organizing Committee'
     },
     ar: {
       intro:
-        'يضم المؤتمر لجانًا تنظيمية وعلمية متخصصة، ولكل منها دور محوري في تحقيق التميز الأكاديمي والجودة التنظيمية.',
+        'يقود المؤتمر نخبة من الخبراء البارزين في مجال التوجيه الاستراتيجي والتميز العلمي.',
+      leadershipTitle: 'قيادة المؤتمر',
       executiveTitle: 'اللجان التنفيذية',
-      organizingTitle: 'اللجنة التنظيمية'
     }
   };
 
@@ -56,35 +56,39 @@ export function Committee() {
         </p>
 
         <div className="space-y-24">
-          <section id="executive-committee" className="scroll-mt-24">
-            <SectionHeading title={text[language].executiveTitle} icon={<Users className="h-5 w-5" />} />
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3 xl:grid-cols-6">
-              {executiveCommitteeMembers.map((member) => (
-                <CommitteeMemberCard
-                  key={`${member.role}-${member.name}`}
-                  image={member.image}
-                  name={member.name}
-                  role={member.role}
-                  institution={member.institution}
-                  country={member.country}
-                />
-              ))}
+          <section id="leadership-committee" className="scroll-mt-24">
+            <SectionHeading title={text[language].leadershipTitle} icon={<Crown className="h-5 w-5" />} />
+            <div className="mx-auto max-w-5xl">
+              <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
+                {leadershipMembers.map((member) => (
+                  <CommitteeMemberCard
+                    key={`${member.role}-${member.name}`}
+                    image={member.image}
+                    name={member.name}
+                    role={member.role}
+                    institution={member.institution}
+                    country={member.country}
+                  />
+                ))}
+              </div>
             </div>
           </section>
 
-          <section id="organizing-committee" className="scroll-mt-24">
-            <SectionHeading title={text[language].organizingTitle} icon={<Users className="h-5 w-5" />} />
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3 xl:grid-cols-6">
-              {organizingCommitteeMembers.map((member) => (
-                <CommitteeMemberCard
-                  key={`${member.name}-${member.institution}-${member.country}`}
-                  image={member.image}
-                  name={member.name}
-                  role={member.role}
-                  institution={member.institution}
-                  country={member.country}
-                />
-              ))}
+          <section id="executive-committee" className="scroll-mt-24">
+            <SectionHeading title={text[language].executiveTitle} icon={<Users className="h-5 w-5" />} />
+            <div className="mx-auto max-w-5xl">
+              <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
+                {executiveCommitteeMembers.map((member) => (
+                  <CommitteeMemberCard
+                    key={`${member.role}-${member.name}`}
+                    image={member.image}
+                    name={member.name}
+                    role={member.role}
+                    institution={member.institution}
+                    country={member.country}
+                  />
+                ))}
+              </div>
             </div>
           </section>
         </div>

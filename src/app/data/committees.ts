@@ -15,21 +15,21 @@ export const leadershipMembers: CommitteeMember[] = [
     role: 'Conference Chairman',
     institution: 'Chairman of the Board of Scientific Society of Chemistry (SSC)',
     country: 'Egypt',
-    image: committeePortrait
+    image: '/committee/Prof. Dr. El-Refaie Kenawy.jpg'
   },
   {
     name: 'Prof. Dr. Mohamed Morsi El-Gohary',
     role: 'Honorary Chairman of the Conference',
     institution: 'President of Borg Al Arab Technological University',
     country: 'Egypt',
-    image: committeePortrait
+    image: '/committee/Prof. Dr. Mohamed Morsi El-Gohary.png'
   },
   {
     name: 'Prof. Dr. Mohamed Abd Alraheem Abu Saied',
     role: 'Executive Chair',
     institution: '',
     country: 'Egypt',
-    image: committeePortrait
+    image: '/committee/Prof. Dr. Mohamed Abd Alraheem Abu Saied.png'
   }
 ];
 
@@ -38,36 +38,35 @@ export const executiveCommitteeMembers: CommitteeMember[] = [
     name: 'Prof. Tarek M Mohamed',
     institution: '',
     country: 'Egypt',
-    image: committeePortrait
+    image: '/committee/Prof. Tarek M Mohamed.jpeg'
   },
   {
     name: 'Prof. Adel Nassar',
     institution: '',
     country: 'Egypt',
-    image: committeePortrait
+    image: '/committee/Prof. Adel Nassar.jpeg'
   },
   {
     name: 'Prof. Sahar Hassona Hassan El Khalafy',
     institution: '',
     country: 'Egypt',
-    image: committeePortrait
   }
 ];
 
 export const organizingCommitteeMembers: CommitteeMember[] = [
-  { name: 'Prof. Ibrahim Al-Fahham', institution: '', country: '', image: committeePortrait },
-  { name: 'Prof. Alaa Arafa Badr', institution: '', country: '', image: committeePortrait },
-  { name: 'Prof. Mohamed Ramadan', institution: '', country: '', image: committeePortrait },
-  { name: 'Prof. Rachid SALGHI', institution: 'Euromed University, Fes', country: 'Morocco', image: committeePortrait },
-  { name: 'Prof. Sami Fattouch', institution: 'INSAT, Tunis', country: 'Tunisia', image: committeePortrait },
-  { name: 'Prof. Alberto Angioni', institution: 'Universita di Cagliari', country: 'Italy', image: committeePortrait }
+  { name: 'Prof. Ibrahim Al-Fahham', institution: '', country: '', image: '/committee/Prof. Ibrahim Al-Fahham.jpg' },
+  { name: 'Prof. Alaa Arafa Badr', institution: '', country: '', image: '/committee/Prof. Alaa Arafa Badr.jpg' },
+  { name: 'Prof. Mohamed Ramadan', institution: '', country: '', image: '/committee/Prof. Mohamed Ramadan.jpeg' },
+  { name: 'Prof. Rachid SALGHI', institution: 'Euromed University, Fes', country: 'Morocco', image: '/committee/Prof. Rachid SALGHI.jpg' },
+  { name: 'Prof. Sami Fattouch', institution: 'INSAT, Tunis', country: 'Tunisia', image: '/committee/Prof. Sami Fattouch.jpg' },
+  { name: 'Prof. Alberto Angioni', institution: 'Universita di Cagliari', country: 'Italy', image: '/committee/Prof. Alberto Angioni.png' }
 ];
 
 export const scientificCommitteeMembers: CommitteeMember[] = [
-  { name: 'Prof. Qusay F. Alsalhy', institution: '', country: '', image: committeePortrait },
-  { name: 'Prof. Urania Menkissoglu-Spiroudi', institution: 'Aristotle University of Thessaloniki', country: 'Greece', image: committeePortrait },
-  { name: 'Prof. Hussein Darwish', institution: 'National Research Centre', country: 'Egypt', image: committeePortrait },
-  { name: 'Prof. Alessandro Atzei', institution: 'University of Cagliari', country: 'Italy', image: committeePortrait },
+  { name: 'Prof. Qusay F. Alsalhy', institution: '', country: '', image: '/committee/Prof. Qusay F. Alsalhy.jpg' },
+  { name: 'Prof. Urania Menkissoglu-Spiroudi', institution: 'Aristotle University of Thessaloniki', country: 'Greece', image: '/committee/Prof. Urania Menkissoglu-Spiroudi.jpg' },
+  { name: 'Prof. Hussein Darwish', institution: 'National Research Centre', country: 'Egypt', image: '/committee/Prof. Hussein Darwish.jpg' },
+  { name: 'Prof. Alessandro Atzei', institution: 'University of Cagliari', country: 'Italy', image: '/committee/Prof. Alessandro Atzei.png' },
   { name: 'Prof. Mohamed Mostafa Elsayed', institution: 'Alexandria University', country: 'Egypt', image: committeePortrait },
   { name: 'Prof. Parvez I Haris', institution: 'De Montfort University', country: 'United Kingdom', image: committeePortrait },
   { name: 'Prof. Said Salama Moselhy', institution: 'Ain Shams University', country: 'Egypt', image: committeePortrait },
@@ -105,6 +104,6 @@ export const scientificCommitteeMembers: CommitteeMember[] = [
   { name: 'Prof. Halim Hammi', institution: 'National Centre of Research in Materials Science (CNRSM)', country: 'Tunisia', image: committeePortrait },
   { name: 'Prof. Mounir Ferhi', institution: 'National Research Center in Materials Sciences', country: 'Tunisia', image: committeePortrait },
   { name: 'Prof. Khalil Abdelrazek Khalil', institution: 'University of Sharjah', country: 'United Arab Emirates', image: committeePortrait },
-  { name: 'Prof. Sakina Mohamed Ahmed', institution: 'University of Khartoum', country: 'Sudan', image: committeePortrait },
+  { name: 'Prof. Mahmoud Abu hussein', institution: '', country: 'Jordan', image: '/committee/Prof. Mahmoud Abu hussein.png' },
   { name: 'Prof. Nasser Barakat', institution: 'King Faisal University', country: 'Saudi Arabia', image: committeePortrait }
 ];

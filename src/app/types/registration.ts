@@ -111,12 +111,6 @@ export const participationTypes = [
   { value: 'exhibitor', label: 'Exhibitor' },
 ];
 
-export const presentationTypes = [
-  { value: 'oral', label: 'Oral' },
-  { value: 'poster', label: 'Poster' },
-  { value: 'listener', label: 'Listener' },
-];
-
 export const conferenceTopics = [
   'Advanced Chemistry, Functional Materials for Industrial Applications',
   'Nanotechnology & Nanoscale Science',
@@ -132,7 +126,6 @@ export const conferenceTopics = [
 export const roomTypes = [
   { value: 'single', label: 'Single Room' },
   { value: 'double', label: 'Double Room' },
-  { value: 'suite', label: 'Suite' },
 ];
 
 export const registrationCategories = [
@@ -167,6 +160,5 @@ export const stepLabels = [
   'Contact Information',
   'Participation',
   'Accommodation & Travel',
-  'Payment',
   'Review & Submit',
 ];
