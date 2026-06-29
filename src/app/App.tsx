@@ -6,6 +6,7 @@ import { Footer } from './components/Footer';
 import { BackToTopButton } from './components/BackToTopButton';
 import { HomePage } from './pages/HomePage';
 import { RegistrationPage } from './pages/RegistrationPage';
+import { VenuePage } from './pages/VenuePage';
 import { CommitteePage } from './components/CommitteePage';
 
 export default function App() {
@@ -17,7 +18,12 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<RegistrationPage />} />
+            <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/venue" element={<VenuePage />} />
             <Route path="/committees" element={<CommitteePage />} />
+            <Route path="/committees/executive" element={<CommitteePage />} />
+            <Route path="/committees/organizing" element={<CommitteePage />} />
+            <Route path="/committees/scientific" element={<CommitteePage />} />
           </Routes>
           <Footer />
           <BackToTopButton />

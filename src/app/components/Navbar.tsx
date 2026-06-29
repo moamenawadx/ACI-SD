@@ -23,15 +23,15 @@ export function Navbar() {
             <a href="/#home" className="text-foreground hover:text-primary transition-colors">{t('home')}</a>
             <a href="/#about" className="text-foreground hover:text-primary transition-colors">{t('about')}</a>
             <a href="/#topics" className="text-foreground hover:text-primary transition-colors">{t('topics')}</a>
-            <a
-              href="/committees"
+            <Link
+              to="/committees"
               className={cn(
                 'text-foreground hover:text-primary transition-colors',
                 pathname.startsWith('/committees') && 'text-primary'
               )}
             >
               {t('committee')}
-            </a>
+            </Link>
             <a href="/#abstract" className="text-foreground hover:text-primary transition-colors">{t('abstract')}</a>
             <a href="/#dates" className="text-foreground hover:text-primary transition-colors">{t('dates_title')}</a>
             <a href="/#registration" className="text-foreground hover:text-primary transition-colors">{t('registration')}</a>
