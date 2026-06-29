@@ -38,12 +38,6 @@ const cards = [oralCard, posterCard, templateCard];
 export function CallForAbstracts() {
   const { t } = useLanguage();
 
-  const handleDownload = (card: DownloadCard) => {
-    if (card.fileUrl) {
-      window.open(card.fileUrl, '_blank');
-    }
-  };
-
   return (
     <section id="abstract" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/20">
       <div className="max-w-6xl mx-auto">
@@ -52,41 +46,48 @@ export function CallForAbstracts() {
         </h2>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cards.map((card, index) => (
-            <div
-              key={index}
-              onClick={() => card.fileUrl && handleDownload(card)}
-              className={`relative group p-8 rounded-2xl bg-card border border-border transition-all duration-300 flex flex-col items-center text-center min-h-[220px] ${
-                card.fileUrl
-                  ? 'cursor-pointer hover:border-transparent hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1'
-                  : 'opacity-80'
-              }`}
-            >
-              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-10 transition-opacity`} />
-              <div className="relative flex flex-col items-center text-center flex-1">
-                <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${card.color} mb-4 transition-transform duration-300 group-hover:scale-110`}>
-                  <card.icon className="w-8 h-8 text-white" />
-                </div>
-                <p className="font-semibold text-foreground text-lg">{t(card.titleKey)}</p>
-                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{t(card.subtitleKey)}</p>
+          {cards.map((card, index) => {
+            const CardWrapper = card.fileUrl ? 'a' : 'div';
+            const linkProps = card.fileUrl
+              ? { href: card.fileUrl, target: '_blank', rel: 'noopener noreferrer' as const }
+              : {};
 
-                {card.fileUrl ? (
-                  <div className="mt-auto pt-4">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary">
-                      <Download className="w-3.5 h-3.5" />
-                      Download
-                    </span>
+            return (
+              <CardWrapper
+                key={index}
+                {...linkProps}
+                className={`relative group p-8 rounded-2xl bg-card border border-border transition-all duration-300 flex flex-col items-center text-center min-h-[220px] ${
+                  card.fileUrl
+                    ? 'cursor-pointer hover:border-transparent hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-1'
+                    : 'opacity-80'
+                }`}
+              >
+                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${card.color} opacity-0 group-hover:opacity-10 transition-opacity`} />
+                <div className="relative flex flex-col items-center text-center flex-1">
+                  <div className={`inline-flex p-4 rounded-xl bg-gradient-to-br ${card.color} mb-4 transition-transform duration-300 group-hover:scale-110`}>
+                    <card.icon className="w-8 h-8 text-white" />
                   </div>
-                ) : (
-                  <div className="mt-auto pt-4">
-                    <span className="inline-block rounded-full border border-border bg-background/60 px-3 py-1 text-xs text-muted-foreground">
-                      Available soon
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+                  <p className="font-semibold text-foreground text-lg">{t(card.titleKey)}</p>
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{t(card.subtitleKey)}</p>
+
+                  {card.fileUrl ? (
+                    <div className="mt-auto pt-4">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary">
+                        <Download className="w-3.5 h-3.5" />
+                        Download
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="mt-auto pt-4">
+                      <span className="inline-block rounded-full border border-border bg-background/60 px-3 py-1 text-xs text-muted-foreground">
+                        Available soon
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </CardWrapper>
+            );
+          })}
         </div>
       </div>
     </section>
