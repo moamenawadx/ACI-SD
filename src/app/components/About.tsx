@@ -1,6 +1,11 @@
 import { useLanguage } from '../contexts/LanguageContext';
 import { Building2, GraduationCap, Target, Lightbulb } from 'lucide-react';
 
+function formatWithSuperscript(text: string): string {
+  return text
+    .replace(/\b(\d+)(st|nd|rd|th)\b/gi, '$1<sup>$2</sup>');
+}
+
 const objectives = [
   'about_objective_1',
   'about_objective_2',
@@ -31,9 +36,10 @@ export function About() {
               </span>
               {t('about_invite_title')}
             </h3>
-            <p className="text-base text-muted-foreground leading-relaxed text-justify whitespace-pre-line">
-              {t('about_invite')}
-            </p>
+            <p
+              className="text-base text-muted-foreground leading-relaxed text-justify whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: formatWithSuperscript(t('about_invite')) }}
+            />
           </div>
 
           {/* Host Organization */}
@@ -78,9 +84,10 @@ export function About() {
               </span>
               {t('about_theme_title')}
             </h3>
-            <p className="text-base text-muted-foreground leading-relaxed text-justify">
-              {t('about_theme')}
-            </p>
+            <p
+              className="text-base text-muted-foreground leading-relaxed text-justify"
+              dangerouslySetInnerHTML={{ __html: formatWithSuperscript(t('about_theme')) }}
+            />
           </div>
 
           {/* Objectives */}

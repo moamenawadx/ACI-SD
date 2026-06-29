@@ -160,4 +160,10 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+
+  sup {
+    font-size: 0.6em;
+    line-height: 0;
+    vertical-align: super;
+  }
 }

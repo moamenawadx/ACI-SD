@@ -6,7 +6,7 @@ import batuLogo from '../../imports/BATU.png';
 import mgprLogo from '../../imports/MGPR.png';
 
 export function Hero() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
@@ -48,10 +48,18 @@ export function Hero() {
             />
           </div>
           <p className="text-xl md:text-2xl text-foreground font-semibold mb-4 leading-relaxed max-w-4xl mx-auto drop-shadow-lg">
-            {t('hero_subtitle')}
+            {language === 'en' ? (
+              <>1<sup>st</sup> International Conference on Advancing Chemistry and Innovation Towards Sustainable Development</>
+            ) : (
+              t('hero_subtitle')
+            )}
           </p>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed max-w-3xl mx-auto">
-            {t('hero_subtitle2')}
+            {language === 'en' ? (
+              <>11<sup>th</sup> Mediterranean Group of Pesticide Research Symposium</>
+            ) : (
+              t('hero_subtitle2')
+            )}
           </p>
         </div>
 

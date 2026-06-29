@@ -1,7 +1,7 @@
 Design a premium, modern, academic conference website UI for:
 
 ACI-SD 2027
-1st International Conference on Advancing Chemistry and Innovation Towards Sustainable Development
+1<sup>st</sup> International Conference on Advancing Chemistry and Innovation Towards Sustainable Development
 &
 11th International Symposium of Mediterranean Group on Pesticide Research
 
