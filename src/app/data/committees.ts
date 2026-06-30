@@ -50,6 +50,7 @@ export const executiveCommitteeMembers: CommitteeMember[] = [
     name: 'Prof. Sahar Hassona Hassan El Khalafy',
     institution: '',
     country: 'Egypt',
+    image: '/committee/Prof. Sahar Hassona Hassan El Khalafy.jpeg'
   }
 ];
 
