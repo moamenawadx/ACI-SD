@@ -2,54 +2,51 @@ import { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { Globe, Moon, Sun, Menu, X } from 'lucide-react';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { cn } from './ui/utils';
 
-const navLinks = [
-  { key: 'home', href: '/#home' },
-  { key: 'about', href: '/#about' },
-  { key: 'topics', href: '/#topics' },
-  { key: 'committee', to: '/committees' },
-  { key: 'abstract', href: '/#abstract' },
-  { key: 'dates_title', href: '/#dates' },
-  { key: 'registration', href: '/#registration' },
-  { key: 'venue', href: '/#venue' },
-  { key: 'contact', href: '/#contact' },
+const sectionLinks = [
+  { key: 'home', section: 'home' },
+  { key: 'about', section: 'about' },
+  { key: 'topics', section: 'topics' },
+  { key: 'abstract', section: 'abstract' },
+  { key: 'dates_title', section: 'dates' },
+  { key: 'registration', section: 'registration' },
+  { key: 'venue', section: 'venue' },
+  { key: 'contact', section: 'contact' },
 ];
 
 export function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
   const { pathname, hash } = useLocation();
+  const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname, hash]);
 
-  const isActive = (link: typeof navLinks[number]) => {
-    if ('to' in link && link.to) {
-      return pathname.startsWith(link.to);
+  const goToSection = (section: string) => {
+    setMobileOpen(false);
+    if (pathname === '/') {
+      const el = document.getElementById(section);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        window.history.replaceState(null, '', `/#${section}`);
+      }
+    } else {
+      navigate(`/#${section}`);
     }
-    if ('href' in link && link.href) {
-      const sectionId = link.href.replace('/#', '');
-      return hash === `#${sectionId}` || (!hash && sectionId === 'home');
-    }
-    return false;
   };
 
-  const renderNavLink = (link: typeof navLinks[number]) => {
-    const active = isActive(link);
-    const classes = cn(
-      'text-sm font-medium transition-colors',
-      active ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
-    );
-
-    if ('to' in link && link.to) {
-      return <Link key={link.key} to={link.to} className={classes}>{t(link.key)}</Link>;
-    }
-    return <a key={link.key} href={link.href!} className={classes}>{t(link.key)}</a>;
+  const isActiveSection = (section: string) => {
+    if (pathname !== '/') return false;
+    if (section === 'home' && !hash) return true;
+    return hash === `#${section}`;
   };
+
+  const isCommitteesActive = pathname.startsWith('/committees');
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
@@ -60,7 +57,27 @@ export function Navbar() {
           </Link>
 
           <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map(renderNavLink)}
+            {sectionLinks.map((link) => (
+              <button
+                key={link.key}
+                onClick={() => goToSection(link.section)}
+                className={cn(
+                  'text-sm font-medium transition-colors',
+                  isActiveSection(link.section) ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                )}
+              >
+                {t(link.key)}
+              </button>
+            ))}
+            <Link
+              to="/committees"
+              className={cn(
+                'text-sm font-medium transition-colors',
+                isCommitteesActive ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              {t('committee')}
+            </Link>
           </div>
 
           <div className="flex items-center gap-3">
@@ -103,20 +120,32 @@ export function Navbar() {
         )}
       >
         <div className="border-t border-border bg-card px-4 py-4 space-y-1">
-          {navLinks.map((link) => {
-            const active = isActive(link);
-            const classes = cn(
+          {sectionLinks.map((link) => (
+            <button
+              key={link.key}
+              onClick={() => goToSection(link.section)}
+              className={cn(
+                'block w-full text-left px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                isActiveSection(link.section) ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              )}
+            >
+              {t(link.key)}
+            </button>
+          ))}
+          <Link
+            to="/committees"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
               'block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors',
-              active ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-            );
-            if ('to' in link && link.to) {
-              return <Link key={link.key} to={link.to} className={classes}>{t(link.key)}</Link>;
-            }
-            return <a key={link.key} href={link.href!} className={classes}>{t(link.key)}</a>;
-          })}
+              isCommitteesActive ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+            )}
+          >
+            {t('committee')}
+          </Link>
           <div className="pt-2">
             <Link
               to="/register"
+              onClick={() => setMobileOpen(false)}
               className="block text-center px-5 py-3 rounded-xl bg-[#F2B21A] text-[#0A0F1E] font-semibold text-sm"
             >
               {t('registerNow')}

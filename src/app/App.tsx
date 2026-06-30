@@ -1,4 +1,5 @@
-import { Route, Routes } from 'react-router';
+import { useEffect } from 'react';
+import { Route, Routes, useLocation } from 'react-router';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Navbar } from './components/Navbar';
@@ -9,12 +10,30 @@ import { RegistrationPage } from './pages/RegistrationPage';
 import { VenuePage } from './pages/VenuePage';
 import { CommitteePage } from './components/CommitteePage';
 
+function ScrollHandler() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (hash) {
+      const id = hash.replace('#', '');
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    }
+  }, [pathname, hash]);
+
+  return null;
+}
+
 export default function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
         <div className="min-h-screen bg-background transition-colors duration-500">
           <Navbar />
+          <ScrollHandler />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/register" element={<RegistrationPage />} />

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ArrowLeft, Users, Crown, Shield, Building2, Microscope } from 'lucide-react';
 import { Link } from 'react-router';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -42,6 +43,10 @@ const sections = [
 
 export function CommitteePage() {
   const { language } = useLanguage();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const text = {
     en: {
