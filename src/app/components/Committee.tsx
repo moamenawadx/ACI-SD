@@ -14,14 +14,14 @@ export function Committee() {
     en: {
       intro:
         'The conference is led by distinguished experts driving scientific excellence and strategic direction.',
-      leadershipTitle: 'Conference Leadership',
-      executiveTitle: 'The Executive Committees',
+      leadershipTitle: 'Conference Committees',
+      executiveTitle: 'Executive Committee',
     },
     ar: {
       intro:
         'يقود المؤتمر نخبة من الخبراء البارزين في مجال التوجيه الاستراتيجي والتميز العلمي.',
-      leadershipTitle: 'قيادة المؤتمر',
-      executiveTitle: 'اللجان التنفيذية',
+      leadershipTitle: 'لجان المؤتمر',
+      executiveTitle: 'اللجنة التنفيذية',
     }
   };
 

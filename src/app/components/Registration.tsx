@@ -132,6 +132,10 @@ export function Registration() {
           {t('reg_intro')}
         </p>
 
+        <h3 className="text-2xl font-bold text-center mb-8 text-foreground">
+          {t('reg_fee_schedule')}
+        </h3>
+
         <div className="overflow-x-auto rounded-2xl shadow-lg mb-12">
           <table className="w-full text-sm bg-card border-collapse">
             <thead>

@@ -13,28 +13,28 @@ const sections = [
   {
     key: 'leadership',
     icon: Crown,
-    titleEn: 'Conference Leadership',
-    titleAr: 'قيادة المؤتمر',
+    titleEn: 'Conference Committees',
+    titleAr: 'لجان المؤتمر',
     members: leadershipMembers
   },
   {
     key: 'executive',
     icon: Shield,
-    titleEn: 'The Executive Committees',
-    titleAr: 'اللجان التنفيذية',
+    titleEn: 'Executive Committee',
+    titleAr: 'اللجنة التنفيذية',
     members: executiveCommitteeMembers
   },
   {
     key: 'organizing',
     icon: Building2,
-    titleEn: 'The Organizing Committee',
+    titleEn: 'Organizing Committee',
     titleAr: 'اللجنة التنظيمية',
     members: organizingCommitteeMembers
   },
   {
     key: 'scientific',
     icon: Microscope,
-    titleEn: 'The Scientific Committee',
+    titleEn: 'Scientific Committee',
     titleAr: 'اللجنة العلمية',
     members: scientificCommitteeMembers
   }
