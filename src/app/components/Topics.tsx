@@ -32,7 +32,7 @@ export function Topics() {
           arTitle: 'البوليمرات الذكية والوظيفية',
         },
         {
-          enTitle: 'Metal-Organic Frameworks (MOFs) and Advanced Materials',
+          enTitle: 'Metal–Organic Frameworks (MOFs) and Advanced Materials',
           arTitle: 'الأطر الفلزية العضوية (MOFs) والمواد المتقدمة',
         },
         {
@@ -248,7 +248,7 @@ export function Topics() {
           arTitle: 'الشركات الناشئة والابتكار في التقنيات العميقة',
         },
         {
-          enTitle: 'Industry-Academia Collaboration',
+          enTitle: 'Industry–Academia Collaboration',
           arTitle: 'التعاون بين الصناعة والأوساط الأكاديمية',
         },
         {
