@@ -97,8 +97,16 @@ export async function getParticipantRegistration(
     .eq('id', registrationId)
     .single();
 
-  if (error || !data) {
-    throw new ParticipantError('Failed to load registration details.');
+  if (error) {
+    console.error('getParticipantRegistration error:', error);
+    throw new ParticipantError(
+      `Failed to load registration details: ${error.message}`,
+      error.code
+    );
+  }
+
+  if (!data) {
+    throw new ParticipantError('Registration record not found.');
   }
 
   return data;

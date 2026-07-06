@@ -1,8 +1,10 @@
 import { X, Loader2, AlertTriangle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { RegistrationRecord } from '../../../services/participantService';
 import { getParticipantRegistration } from '../../../services/participantService';
 import { sessionService } from '../../../services/sessionService';
+
+const FETCH_TIMEOUT = 15000;
 
 interface RegistrationDetailsModalProps {
   open: boolean;
@@ -10,7 +12,7 @@ interface RegistrationDetailsModalProps {
 }
 
 function DetailRow({ label, value }: { label: string; value: string | boolean | null }) {
-  const display = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value || '—';
+  const display = typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value ?? '—';
   return (
     <div className="flex items-start gap-3 py-2.5 border-b border-border/50 last:border-0">
       <span className="text-sm text-muted-foreground w-2/5 shrink-0">{label}</span>
@@ -30,18 +32,52 @@ function DetailSection({ title, children }: { title: string; children: React.Rea
 
 export function RegistrationDetailsModal({ open, onClose }: RegistrationDetailsModalProps) {
   const [data, setData] = useState<RegistrationRecord | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const session = sessionService.getSession();
 
   useEffect(() => {
-    if (!open || !session) return;
+    if (!open || !session) {
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    const timeout = setTimeout(() => {
+      if (!cancelled) {
+        cancelled = true;
+        console.error('RegistrationDetailsModal timeout: request exceeded 15s');
+        setError('Request timed out. Please try again.');
+        setLoading(false);
+      }
+    }, FETCH_TIMEOUT);
+
     setLoading(true);
     setError(null);
+    setData(null);
+
     getParticipantRegistration(session.id)
-      .then(setData)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .then((result) => {
+        if (!cancelled) {
+          setData(result);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error('RegistrationDetailsModal fetch error:', err);
+          setError(err.message || 'Failed to load registration details.');
+          setLoading(false);
+        }
+      })
+      .finally(() => {
+        clearTimeout(timeout);
+      });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
   }, [open, session]);
 
   if (!open) return null;

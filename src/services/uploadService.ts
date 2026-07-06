@@ -15,7 +15,7 @@ export async function uploadAbstractPdf(
   const filePath = `${registrationId}/abstract.${ext}`;
 
   const { error: uploadError } = await supabase.storage
-    .from('abstracts')
+    .from('ABSTRACTS')
     .upload(filePath, file, {
       cacheControl: '3600',
       upsert: false,
@@ -30,7 +30,7 @@ export async function uploadAbstractPdf(
   }
 
   const { data: urlData } = supabase.storage
-    .from('abstracts')
+    .from('ABSTRACTS')
     .getPublicUrl(filePath);
 
   return urlData.publicUrl;
