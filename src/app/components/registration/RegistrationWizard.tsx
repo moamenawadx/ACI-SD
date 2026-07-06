@@ -1,5 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Check, Loader2, AlertTriangle, Copy } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check, Loader2, AlertTriangle, Copy, ClipboardCheck } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 import type { RegistrationFormData } from '../../types/registration';
 import { initialFormData, stepLabels } from '../../types/registration';
 import { TextInput, SelectInput, RadioGroup, CheckboxField, TextArea, CountrySelect, PhoneInput, DatePicker } from './FormFields';
@@ -596,13 +598,14 @@ function validateStep(step: number, data: RegistrationFormData): Record<string, 
 }
 
 export function RegistrationWizard() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [data, setData] = useState<RegistrationFormData>({ ...initialFormData });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
-  const [registrationId, setRegistrationId] = useState<string | null>(null);
+  const [registrationNumber, setRegistrationNumber] = useState<string | null>(null);
 
   const update = useCallback((patch: Partial<RegistrationFormData>) => {
     setData((prev) => ({ ...prev, ...patch }));
@@ -644,7 +647,7 @@ export function RegistrationWizard() {
 
     try {
       const result = await submitRegistration(data);
-      setRegistrationId(result.id);
+      setRegistrationNumber(result.registrationNumber ?? null);
       setSubmitted(true);
     } catch (err) {
       if (err instanceof RegistrationError) {
@@ -665,29 +668,47 @@ export function RegistrationWizard() {
 
   if (submitted) {
     return (
-      <div className="max-w-2xl mx-auto text-center py-20">
-        <div className="size-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-6">
-          <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
+      <div className="max-w-2xl mx-auto text-center py-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="size-20 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-8 ring-8 ring-green-100/50 dark:ring-green-900/20">
+          <Check className="w-10 h-10 text-green-600 dark:text-green-400" />
         </div>
-        <h3 className="text-2xl font-bold text-foreground mb-3">Registration Submitted Successfully</h3>
-        <p className="text-muted-foreground leading-relaxed max-w-md mx-auto mb-8">
-          Thank you for registering. Your data has been received. Please save your registration ID for future reference.
+
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+          Registration Completed Successfully
+        </h2>
+
+        <div className="mt-8 mb-6">
+          <p className="text-sm text-muted-foreground mb-2">Registration Number</p>
+          <div className="inline-flex items-center gap-4 px-8 py-4 rounded-2xl bg-gradient-to-r from-[#1E73A8]/10 to-[#2CA6C4]/10 border border-[#1E73A8]/20 dark:border-[#2CA6C4]/20 shadow-lg">
+            <span className="text-2xl font-bold font-mono tracking-wider text-foreground select-all">
+              {registrationNumber}
+            </span>
+          </div>
+        </div>
+
+        <p className="text-muted-foreground leading-relaxed max-w-lg mx-auto mb-8 text-sm">
+          Please save this Registration Number. You will use it together with your National ID / Passport Number to access your Participant Portal.
         </p>
 
-        {registrationId && (
-          <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-muted border border-border">
-            <span className="text-xs font-mono font-bold text-foreground tracking-wider select-all">
-              {registrationId}
-            </span>
-            <button
-              onClick={() => navigator.clipboard.writeText(registrationId!)}
-              className="p-1.5 rounded-lg hover:bg-card transition-colors text-muted-foreground hover:text-foreground"
-              title="Copy ID"
-            >
-              <Copy className="w-4 h-4" />
-            </button>
-          </div>
-        )}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(registrationNumber!);
+              toast.success('Registration Number copied.');
+            }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all"
+          >
+            <Copy className="w-4 h-4" />
+            Copy Registration Number
+          </button>
+          <button
+            onClick={() => navigate('/participant/login')}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E73A8] to-[#2CA6C4] text-white font-medium hover:shadow-lg hover:shadow-primary/20 transition-all"
+          >
+            <ClipboardCheck className="w-4 h-4" />
+            Go to Participant Portal
+          </button>
+        </div>
       </div>
     );
   }

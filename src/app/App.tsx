@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
+import { Toaster } from 'sonner';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { Navbar } from './components/Navbar';
@@ -9,6 +10,9 @@ import { HomePage } from './pages/HomePage';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { VenuePage } from './pages/VenuePage';
 import { CommitteePage } from './components/CommitteePage';
+import { ParticipantLoginPage } from './pages/ParticipantLoginPage';
+import { ParticipantDashboardPage } from './pages/ParticipantDashboardPage';
+import { ProtectedRoute } from './components/participant/ProtectedRoute';
 
 function ScrollHandler() {
   const { pathname, hash } = useLocation();
@@ -43,9 +47,28 @@ export default function App() {
             <Route path="/committees/executive" element={<CommitteePage />} />
             <Route path="/committees/organizing" element={<CommitteePage />} />
             <Route path="/committees/scientific" element={<CommitteePage />} />
+            <Route path="/participant/login" element={<ParticipantLoginPage />} />
+            <Route
+              path="/participant"
+              element={
+                <ProtectedRoute>
+                  <ParticipantDashboardPage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
           <Footer />
           <BackToTopButton />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: 'var(--card)',
+                color: 'var(--foreground)',
+                border: '1px solid var(--border)',
+              },
+            }}
+          />
         </div>
       </LanguageProvider>
     </ThemeProvider>

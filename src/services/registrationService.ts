@@ -3,6 +3,7 @@ import type { RegistrationFormData } from '../app/types/registration';
 
 export interface RegistrationResult {
   id: string;
+  registrationNumber?: string;
   receiptUrl?: string;
 }
 
@@ -113,7 +114,7 @@ export async function submitRegistration(
     const { data: inserted, error: insertError } = await supabase
       .from('registrations')
       .insert(row)
-      .select('id')
+      .select('id, registration_number')
       .single();
 
     if (insertError) {
@@ -123,7 +124,7 @@ export async function submitRegistration(
       );
     }
 
-    return { id: inserted.id, receiptUrl };
+    return { id: inserted.id, registrationNumber: inserted.registration_number, receiptUrl };
   }
 
   const row = mapFormDataToRow(data);
@@ -131,7 +132,7 @@ export async function submitRegistration(
   const { data: inserted, error: insertError } = await supabase
     .from('registrations')
     .insert(row)
-    .select('id')
+    .select('id, registration_number')
     .single();
 
   if (insertError) {
@@ -141,5 +142,5 @@ export async function submitRegistration(
     );
   }
 
-  return { id: inserted.id };
+  return { id: inserted.id, registrationNumber: inserted.registration_number };
 }
