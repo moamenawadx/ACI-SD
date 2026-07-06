@@ -23,6 +23,7 @@ export async function uploadAbstractPdf(
     });
 
   if (uploadError) {
+    console.error('Abstract upload error (full):', uploadError);
     throw new UploadError(
       `Failed to upload abstract: ${uploadError.message}`,
       uploadError.code

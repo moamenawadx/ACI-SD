@@ -34,9 +34,9 @@ export function RegistrationDetailsModal({ open, onClose }: RegistrationDetailsM
   const [data, setData] = useState<RegistrationRecord | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const session = sessionService.getSession();
 
   useEffect(() => {
+    const session = sessionService.getSession();
     if (!open || !session) {
       setLoading(false);
       return;
@@ -78,7 +78,7 @@ export function RegistrationDetailsModal({ open, onClose }: RegistrationDetailsM
       cancelled = true;
       clearTimeout(timeout);
     };
-  }, [open, session]);
+  }, [open]);
 
   if (!open) return null;
 
