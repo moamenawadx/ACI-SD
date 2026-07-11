@@ -1,13 +1,19 @@
-import { useState, useRef } from 'react';
-import { FileText, Upload, CheckCircle, Loader2, AlertTriangle, X } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import {
+  FileText, Upload, CheckCircle, Loader2, AlertTriangle, X,
+  Clock, XCircle,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { sessionService } from '../../../services/sessionService';
 import { uploadAbstractPdf, submitAbstract, UploadError } from '../../../services/uploadService';
+import { getAbstractSubmission } from '../../../services/participantService';
+import type { AbstractSubmissionRecord } from '../../../services/participantService';
 
-interface AbstractSubmissionData {
-  submittedAt: string;
-  fileName: string;
-}
+const STATUS_CONFIG = {
+  pending: { icon: Clock, label: 'Pending Review', class: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' },
+  approved: { icon: CheckCircle, label: 'Approved', class: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' },
+  rejected: { icon: XCircle, label: 'Rejected', class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' },
+} as const;
 
 export function AbstractUploadCard() {
   const session = sessionService.getSession();
@@ -15,11 +21,39 @@ export function AbstractUploadCard() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [submissionData, setSubmissionData] = useState<AbstractSubmissionData | null>(null);
+  const [checkingExisting, setCheckingExisting] = useState(true);
+  const [existingSubmission, setExistingSubmission] = useState<AbstractSubmissionRecord | null>(null);
+  const [submittedAt, setSubmittedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // TODO: Security — getAbstractSubmission and submitAbstract rely on anon-key queries
+  //       with no RLS enforcement. See participantService.ts TODOs for migration options.
+  useEffect(() => {
+    if (!session) {
+      setCheckingExisting(false);
+      return;
+    }
+    getAbstractSubmission(session.id)
+      .then((record) => {
+        if (record) {
+          setExistingSubmission(record);
+          setSubmitted(true);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setCheckingExisting(false));
+  }, [session]);
+
   if (!session) return null;
+
+  if (checkingExisting) {
+    return (
+      <div className="rounded-2xl bg-card border border-border shadow-sm p-6 sm:p-8 flex items-center justify-center py-16">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
@@ -60,17 +94,10 @@ export function AbstractUploadCard() {
     try {
       const fileUrl = await uploadAbstractPdf(session.id, file);
       await submitAbstract(session.id, summary.trim(), fileUrl);
+      const record = await getAbstractSubmission(session.id);
+      if (record) setExistingSubmission(record);
+      setSubmittedAt(new Date().toISOString());
       setSubmitted(true);
-      setSubmissionData({
-        submittedAt: new Date().toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        }),
-        fileName: file.name,
-      });
       toast.success('Abstract submitted successfully.');
     } catch (err) {
       if (err instanceof UploadError) {
@@ -83,29 +110,67 @@ export function AbstractUploadCard() {
     }
   };
 
-  if (submitted && submissionData) {
+  const submission = existingSubmission;
+  const displayStatus = submission?.status ?? 'pending';
+  const statusInfo = STATUS_CONFIG[displayStatus];
+  const StatusIcon = statusInfo.icon;
+
+  if (submitted) {
+    const date = submission?.created_at ?? submittedAt ?? '';
+    const url = submission?.abstract_file_url ?? '';
     return (
       <div className="rounded-2xl bg-card border border-border shadow-sm p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200">
         <div className="text-center">
-          <div className="size-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4 ring-8 ring-green-100/50 dark:ring-green-900/20">
-            <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+          <div className={`size-16 rounded-full flex items-center justify-center mx-auto mb-4 ring-8 ${
+            displayStatus === 'approved'
+              ? 'bg-green-100 dark:bg-green-900/30 ring-green-100/50 dark:ring-green-900/20'
+              : displayStatus === 'rejected'
+              ? 'bg-red-100 dark:bg-red-900/30 ring-red-100/50 dark:ring-red-900/20'
+              : 'bg-yellow-100 dark:bg-yellow-900/30 ring-yellow-100/50 dark:ring-yellow-900/20'
+          }`}>
+            <StatusIcon className={`w-8 h-8 ${
+              displayStatus === 'approved' ? 'text-green-600 dark:text-green-400'
+              : displayStatus === 'rejected' ? 'text-red-600 dark:text-red-400'
+              : 'text-yellow-600 dark:text-yellow-400'
+            }`} />
           </div>
-          <h3 className="text-xl font-bold text-foreground mb-2">Abstract Submitted Successfully</h3>
-          <div className="mt-4 space-y-2">
-            <p className="text-sm text-muted-foreground">
-              Submission Date: {submissionData.submittedAt}
+          <h3 className="text-xl font-bold text-foreground mb-2">Abstract Submitted</h3>
+          {date && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              Submission Date: {new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric',
+              })}
             </p>
-            <p className="text-sm text-muted-foreground">
-              Uploaded File: {submissionData.fileName}
+          )}
+          {url && (
+            <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-card border border-border">
+              <FileText className="w-3.5 h-3.5 text-muted-foreground" />
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                View PDF
+              </a>
+            </div>
+          )}
+          <div className={`mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${statusInfo.class}`}>
+            <StatusIcon className="w-3.5 h-3.5" />
+            {statusInfo.label}
+          </div>
+          {displayStatus === 'rejected' && (
+            <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+              Your abstract was not approved. Please contact the conference organizers for more information.
             </p>
-          </div>
-          <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium">
-            <CheckCircle className="w-3.5 h-3.5" />
-            Final Submission
-          </div>
-          <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-            This is your final submission. You cannot upload another abstract.
-          </p>
+          )}
+          {displayStatus !== 'rejected' && (
+            <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+              {displayStatus === 'pending'
+                ? 'Your abstract is pending review. You will be notified once it has been reviewed.'
+                : 'Your abstract has been approved. You will receive further instructions.'}
+            </p>
+          )}
         </div>
       </div>
     );

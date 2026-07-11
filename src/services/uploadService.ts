@@ -37,6 +37,9 @@ export async function uploadAbstractPdf(
   return urlData.publicUrl;
 }
 
+// TODO: Security — INSERT + UPDATE use the anon key. RLS allows INSERT for anon, but
+//       any client can insert arbitrary rows. After migrating participants to Supabase Auth,
+//       restrict INSERT policies to auth.uid() = registration_id.
 export async function submitAbstract(
   registrationId: string,
   abstractSummary: string,

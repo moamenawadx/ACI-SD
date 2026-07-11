@@ -13,6 +13,10 @@ import { CommitteePage } from './components/CommitteePage';
 import { ParticipantLoginPage } from './pages/ParticipantLoginPage';
 import { ParticipantDashboardPage } from './pages/ParticipantDashboardPage';
 import { ProtectedRoute } from './components/participant/ProtectedRoute';
+import { AdminLoginPage } from './pages/AdminLoginPage';
+import { AdminAbstractsPage } from './pages/AdminAbstractsPage';
+import { AdminRoute } from './components/admin/AdminRoute';
+import { AdminLayout } from './components/admin/AdminLayout';
 
 function ScrollHandler() {
   const { pathname, hash } = useLocation();
@@ -54,6 +58,17 @@ export default function App() {
                 <ProtectedRoute>
                   <ParticipantDashboardPage />
                 </ProtectedRoute>
+              }
+            />
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route
+              path="/admin/abstracts"
+              element={
+                <AdminRoute>
+                  <AdminLayout>
+                    <AdminAbstractsPage />
+                  </AdminLayout>
+                </AdminRoute>
               }
             />
           </Routes>

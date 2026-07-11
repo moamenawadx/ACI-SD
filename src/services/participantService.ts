@@ -59,6 +59,9 @@ export interface AbstractSubmissionRecord {
   registration_id: string;
   abstract_summary: string;
   abstract_file_url: string;
+  status: 'pending' | 'approved' | 'rejected';
+  reviewed_by: string | null;
+  reviewed_at: string | null;
   created_at: string;
 }
 
@@ -88,6 +91,12 @@ export async function loginParticipant(
   };
 }
 
+// TODO: Security — This query uses the anon key with client-side filtering by registration_id.
+//       RLS cannot enforce per-participant access because participants don't use Supabase Auth.
+//       Migrate to either:
+//       (a) Supabase Auth for participants (enables RLS via auth.uid())
+//       (b) Edge Function with service_role key + custom session validation
+//       See: adminService.ts updateAbstractStatus for the admin auth pattern.
 export async function getParticipantRegistration(
   registrationId: string
 ): Promise<RegistrationRecord> {
@@ -112,6 +121,9 @@ export async function getParticipantRegistration(
   return data;
 }
 
+// TODO: Security — Same issue as getParticipantRegistration.
+//       Queries abstract_submissions with anon key; RLS cannot restrict to own records.
+//       See getParticipantRegistration for migration options.
 export async function getAbstractSubmission(
   registrationId: string
 ): Promise<AbstractSubmissionRecord | null> {
