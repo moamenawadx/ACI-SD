@@ -38,12 +38,16 @@ export function AdminAbstractsPage() {
   const session = adminSessionService.getSession();
 
   const fetchAbstracts = useCallback(async () => {
+    console.log('[AdminAbstractsPage] fetchAbstracts called, filter:', statusFilter);
     setLoading(true);
     setError(null);
     try {
       const data = await listAbstracts(statusFilter);
+      console.log('[AdminAbstractsPage] listAbstracts returned:', data);
+      console.log('[AdminAbstractsPage] data length:', data?.length);
       setAbstracts(data);
     } catch (err) {
+      console.error('[AdminAbstractsPage] listAbstracts threw:', err);
       setError(err instanceof Error ? err.message : 'Failed to load abstracts.');
     } finally {
       setLoading(false);

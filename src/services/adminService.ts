@@ -61,30 +61,35 @@ export async function logoutAdmin(): Promise<void> {
 export async function listAbstracts(
   statusFilter?: string
 ): Promise<AbstractWithParticipant[]> {
+  console.log('[listAbstracts] statusFilter:', statusFilter);
+
   let query = supabase
     .from('abstract_submissions')
     .select(
-      `*,
-      registrations!inner (
-        full_name,
-        registration_number,
-        email,
-        university_organization
-      )`
+      '*, registrations!inner(full_name, registration_number, email, university_organization)'
     )
     .order('created_at', { ascending: false });
 
   if (statusFilter && statusFilter !== 'all') {
+    console.log('[listAbstracts] applying filter: status =', statusFilter);
     query = query.eq('status', statusFilter);
   }
 
   const { data, error } = await query;
 
+  console.log('[listAbstracts] Supabase error:', error);
+  console.log('[listAbstracts] Supabase data (raw):', data);
+  console.log('[listAbstracts] data is array?', Array.isArray(data));
+  console.log('[listAbstracts] data length:', data?.length);
+
   if (error) {
     throw new AdminError(`Failed to load abstracts: ${error.message}`, error.code);
   }
 
-  return (data as unknown as AbstractWithParticipant[]) ?? [];
+  const mapped = (data as unknown as AbstractWithParticipant[]) ?? [];
+  console.log('[listAbstracts] mapped data:', mapped);
+  console.log('[listAbstracts] mapped length:', mapped.length);
+  return mapped;
 }
 
 export async function updateAbstractStatus(
