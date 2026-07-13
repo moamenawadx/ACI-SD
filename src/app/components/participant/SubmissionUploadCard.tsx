@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
   FileText, Upload, CheckCircle, Loader2, AlertTriangle, X,
   Clock, XCircle, Download,
@@ -11,6 +11,7 @@ import {
   getSubmission,
   submitSubmission,
   replaceSubmission,
+  resubmitSubmission,
   getSubmissionFileUrl,
   SubmissionError,
 } from '../../../services/submissionService';
@@ -51,6 +52,7 @@ export function SubmissionUploadCard({ type }: SubmissionUploadCardProps) {
   const [error, setError] = useState<string | null>(null);
   const [fileUrl, setFileUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const replaceInputRef = useRef<HTMLInputElement>(null);
 
   const userId = user?.id;
 
@@ -108,6 +110,43 @@ export function SubmissionUploadCard({ type }: SubmissionUploadCardProps) {
   const removeFile = () => {
     setFile(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleReplaceClick = () => {
+    replaceInputRef.current?.click();
+  };
+
+  const handleReplaceFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (!selected || !existingSubmission) return;
+
+    const ext = '.' + selected.name.split('.').pop()?.toLowerCase();
+    if (!config.acceptedExtensions.includes(ext)) {
+      toast.error(`Accepted formats: ${config.acceptedExtensions.join(', ')}`);
+      return;
+    }
+
+    if (selected.size > config.maxFileSize * 1024 * 1024) {
+      toast.error(`File size must not exceed ${config.maxFileSize} MB.`);
+      return;
+    }
+
+    setUploading(true);
+    try {
+      await resubmitSubmission(type, existingSubmission.id, userId, selected);
+      const record = await getSubmission(type, userId);
+      if (record) setExistingSubmission(record);
+      toast.success(`${config.title} resubmitted successfully.`);
+    } catch (err) {
+      if (err instanceof SubmissionError) {
+        toast.error(err.message);
+      } else {
+        toast.error('Failed to resubmit. Please try again.');
+      }
+    } finally {
+      setUploading(false);
+      if (replaceInputRef.current) replaceInputRef.current.value = '';
+    }
   };
 
   const handleSubmit = async () => {
@@ -226,9 +265,32 @@ export function SubmissionUploadCard({ type }: SubmissionUploadCardProps) {
             </div>
           )}
           {displayStatus === 'rejected' && (
-            <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-              Your {type} was not approved. Please contact the conference organizers for more information.
-            </p>
+            <div className="mt-6">
+              <button
+                onClick={handleReplaceClick}
+                disabled={uploading}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E73A8] to-[#2CA6C4] text-white font-medium hover:shadow-lg hover:shadow-primary/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {uploading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Replacing...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4" />
+                    Replace File
+                  </>
+                )}
+              </button>
+              <input
+                ref={replaceInputRef}
+                type="file"
+                accept={config.acceptedExtensions.join(',')}
+                onChange={handleReplaceFileChange}
+                className="hidden"
+              />
+            </div>
           )}
           {displayStatus === 'pending' && (
             <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">

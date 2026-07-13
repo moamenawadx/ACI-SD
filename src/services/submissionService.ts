@@ -160,6 +160,50 @@ export async function replaceSubmission(
   return { filePath };
 }
 
+export async function resubmitSubmission(
+  type: SubmissionType,
+  submissionId: string,
+  registrationId: string,
+  file: File,
+  summary?: string,
+): Promise<{ filePath: string }> {
+  const config = getConfig(type);
+
+  const filePath = await uploadFile(
+    config.bucket,
+    registrationId,
+    config.filePathPrefix,
+    file,
+  );
+
+  const updateData: Record<string, unknown> = {
+    status: 'pending',
+    review_notes: null,
+    reviewed_by: null,
+    reviewed_at: null,
+    [config.filePathColumn]: filePath,
+    updated_at: new Date().toISOString(),
+  };
+
+  if (summary !== undefined && config.summaryColumn) {
+    updateData[config.summaryColumn] = summary;
+  }
+
+  const { error } = await supabase
+    .from(config.table)
+    .update(updateData)
+    .eq('id', submissionId);
+
+  if (error) {
+    throw new SubmissionError(
+      `Failed to resubmit ${type}: ${error.message}`,
+      error.code,
+    );
+  }
+
+  return { filePath };
+}
+
 export async function deleteSubmission(
   type: SubmissionType,
   submissionId: string,
