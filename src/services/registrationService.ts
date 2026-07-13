@@ -4,23 +4,17 @@ import type { RegistrationFormData } from '../app/types/registration';
 export interface RegistrationResult {
   id: string;
   registrationNumber?: string;
-  receiptUrl?: string;
+  receiptPath?: string;
 }
 
 export class RegistrationError extends Error {
-  constructor(
-    message: string,
-    public code?: string
-  ) {
+  constructor(message: string, public code?: string) {
     super(message);
     this.name = 'RegistrationError';
   }
 }
 
-function mapFormDataToRow(
-  data: RegistrationFormData,
-  receiptUrl?: string
-) {
+function mapFormDataToRow(data: RegistrationFormData, receiptPath?: string) {
   return {
     title: data.title || null,
     full_name: data.fullName || null,
@@ -64,7 +58,7 @@ function mapFormDataToRow(
     amount_paid: data.amountPaid || null,
     payment_date: data.paymentDate || null,
     transaction_reference: data.transactionReference || null,
-    receipt_url: receiptUrl || null,
+    receipt_path: receiptPath || null,
 
     agree_declaration: data.agreeDeclaration || null,
   };
@@ -73,7 +67,6 @@ function mapFormDataToRow(
 export async function uploadReceipt(
   registrationId: string,
   file: File,
-  onProgress?: (percent: number) => void
 ): Promise<string> {
   const ext = file.name.split('.').pop()?.toLowerCase() || 'bin';
   const filePath = `${registrationId}/receipt.${ext}`;
@@ -88,59 +81,81 @@ export async function uploadReceipt(
   if (uploadError) {
     throw new RegistrationError(
       `Failed to upload receipt: ${uploadError.message}`,
-      uploadError.code
+      uploadError.code,
     );
   }
 
-  const { data: urlData } = supabase.storage
-    .from('receipts')
-    .getPublicUrl(filePath);
-
-  return urlData.publicUrl;
+  return filePath;
 }
 
 export async function submitRegistration(
   data: RegistrationFormData,
-  onUploadProgress?: (percent: number) => void
 ): Promise<RegistrationResult> {
-  let receiptUrl: string | undefined;
+  const { data: authData, error: authError } = await supabase.auth.signUp({
+    email: data.email,
+    password: data.password,
+  });
 
-  if (data.receiptFile) {
-    const tempId = crypto.randomUUID();
-    receiptUrl = await uploadReceipt(tempId, data.receiptFile, onUploadProgress);
+  let userId: string;
 
-    const row = mapFormDataToRow(data, receiptUrl);
-
-    const { data: inserted, error: insertError } = await supabase
-      .from('registrations')
-      .insert(row)
-      .select('id, registration_number')
-      .single();
-
-    if (insertError) {
-      throw new RegistrationError(
-        `Failed to submit registration: ${insertError.message}`,
-        insertError.code
-      );
+  if (authError) {
+    if (authError.message?.toLowerCase().includes('already registered')) {
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+      if (signInError || !signInData.user) {
+        throw new RegistrationError(
+          'An account with this email already exists. Please sign in instead.',
+        );
+      }
+      userId = signInData.user.id;
+    } else {
+      throw new RegistrationError(authError.message, authError?.code);
     }
-
-    return { id: inserted.id, registrationNumber: inserted.registration_number, receiptUrl };
+  } else if (!authData.user) {
+    throw new RegistrationError('Failed to create account. Please try again.');
+  } else {
+    userId = authData.user.id;
   }
 
   const row = mapFormDataToRow(data);
 
   const { data: inserted, error: insertError } = await supabase
     .from('registrations')
-    .insert(row)
+    .upsert({ ...row, id: userId }, { onConflict: 'id' })
     .select('id, registration_number')
     .single();
 
   if (insertError) {
     throw new RegistrationError(
       `Failed to submit registration: ${insertError.message}`,
-      insertError.code
+      insertError.code,
     );
   }
 
-  return { id: inserted.id, registrationNumber: inserted.registration_number };
+  let receiptPath: string | undefined;
+
+  if (data.receiptFile) {
+    try {
+      receiptPath = await uploadReceipt(userId, data.receiptFile);
+
+      const { error: updateError } = await supabase
+        .from('registrations')
+        .update({ receipt_path: receiptPath })
+        .eq('id', userId);
+
+      if (updateError) {
+        console.error('Failed to update receipt_path:', updateError);
+      }
+    } catch (err) {
+      console.error('Receipt upload failed, registration preserved:', err);
+    }
+  }
+
+  return {
+    id: inserted.id,
+    registrationNumber: inserted.registration_number,
+    receiptPath,
+  };
 }

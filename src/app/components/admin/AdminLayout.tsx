@@ -1,11 +1,16 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Shield, FileText, LogOut } from 'lucide-react';
-import { adminSessionService } from '../../../services/adminSessionService';
-import { logoutAdmin } from '../../../services/adminService';
+import { getAdminInfo, logoutAdmin } from '../../../services/adminService';
+import type { AdminInfo } from '../../../services/adminService';
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const session = adminSessionService.getSession();
+  const [adminInfo, setAdminInfo] = useState<AdminInfo | null>(null);
+
+  useEffect(() => {
+    getAdminInfo().then(setAdminInfo);
+  }, []);
 
   const handleLogout = async () => {
     await logoutAdmin();
@@ -23,18 +28,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               </div>
               <div>
                 <h1 className="text-base font-bold text-foreground">Admin Panel</h1>
-                {session && (
-                  <p className="text-xs text-muted-foreground">{session.fullName}</p>
+                {adminInfo && (
+                  <p className="text-xs text-muted-foreground">{adminInfo.fullName}</p>
                 )}
               </div>
             </div>
             <nav className="flex items-center gap-4">
               <button
-                onClick={() => navigate('/admin/abstracts')}
+                onClick={() => navigate('/admin/submissions')}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
               >
                 <FileText className="w-4 h-4" />
-                Abstracts
+                Submissions
               </button>
               <button
                 onClick={handleLogout}

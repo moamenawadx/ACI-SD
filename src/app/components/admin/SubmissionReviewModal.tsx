@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, FileText, ExternalLink, CheckCircle, XCircle, Loader2 } from 'lucide-react';
-import type { AbstractWithParticipant } from '../../../services/adminService';
+import type { SubmissionWithParticipant } from '../../../services/submissionService';
+import type { SubmissionTypeConfig } from '../../config/submissionConfig';
+import { getSignedUrl } from '../../../services/storageService';
 
-interface AbstractReviewModalProps {
-  abstract: AbstractWithParticipant;
+interface SubmissionReviewModalProps {
+  submission: SubmissionWithParticipant;
+  config: SubmissionTypeConfig;
   onClose: () => void;
-  onStatusChange: (id: string, status: 'approved' | 'rejected') => Promise<void>;
+  onStatusChange: (id: string, status: 'approved' | 'rejected', reviewNotes?: string) => Promise<void>;
 }
 
 const STATUS_BADGE = {
@@ -14,20 +17,32 @@ const STATUS_BADGE = {
   rejected: { label: 'Rejected', class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' },
 } as const;
 
-export function AbstractReviewModal({
-  abstract,
+export function SubmissionReviewModal({
+  submission,
+  config,
   onClose,
   onStatusChange,
-}: AbstractReviewModalProps) {
+}: SubmissionReviewModalProps) {
   const [processing, setProcessing] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
-  const badge = STATUS_BADGE[abstract.status];
+  const [reviewNotes, setReviewNotes] = useState(submission.review_notes || '');
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const badge = STATUS_BADGE[submission.status];
+
+  const summaryValue = config.summaryColumn ? (submission[config.summaryColumn] as string) : null;
+
+  useEffect(() => {
+    const filePath = submission[config.filePathColumn] as string | undefined;
+    if (filePath) {
+      getSignedUrl(config.bucket, filePath).then(setFileUrl).catch(() => {});
+    }
+  }, [submission, config]);
 
   const handleAction = async (status: 'approved' | 'rejected') => {
     setProcessing(true);
     setActionError(null);
     try {
-      await onStatusChange(abstract.id, status);
+      await onStatusChange(submission.id, status, reviewNotes || undefined);
       onClose();
     } catch {
       setActionError('Failed to update status. Please try again.');
@@ -41,7 +56,7 @@ export function AbstractReviewModal({
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
       <div className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl bg-card border border-border shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         <div className="sticky top-0 z-10 flex items-center justify-between p-6 border-b border-border bg-card">
-          <h3 className="text-lg font-bold text-foreground">Abstract Review</h3>
+          <h3 className="text-lg font-bold text-foreground">Review {config.title}</h3>
           <button
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
@@ -54,28 +69,28 @@ export function AbstractReviewModal({
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="text-muted-foreground">Participant</span>
-              <p className="font-medium text-foreground">{abstract.registrations.full_name}</p>
+              <p className="font-medium text-foreground">{submission.registrations.full_name}</p>
             </div>
             <div>
               <span className="text-muted-foreground">Registration #</span>
               <p className="font-medium text-foreground font-mono">
-                {abstract.registrations.registration_number}
+                {submission.registrations.registration_number}
               </p>
             </div>
             <div>
               <span className="text-muted-foreground">Email</span>
-              <p className="font-medium text-foreground">{abstract.registrations.email}</p>
+              <p className="font-medium text-foreground">{submission.registrations.email}</p>
             </div>
             <div>
               <span className="text-muted-foreground">Affiliation</span>
               <p className="font-medium text-foreground">
-                {abstract.registrations.university_organization}
+                {submission.registrations.university_organization}
               </p>
             </div>
             <div>
               <span className="text-muted-foreground">Submitted</span>
               <p className="font-medium text-foreground">
-                {new Date(abstract.created_at).toLocaleDateString('en-US', {
+                {new Date(submission.created_at).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -90,30 +105,59 @@ export function AbstractReviewModal({
             </div>
           </div>
 
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">Abstract Summary</h4>
-            <div className="rounded-xl border border-border bg-muted/30 p-4 max-h-48 overflow-y-auto">
-              <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
-                {abstract.abstract_summary}
-              </p>
+          {summaryValue && (
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-2">{config.summaryLabel}</h4>
+              <div className="rounded-xl border border-border bg-muted/30 p-4 max-h-48 overflow-y-auto">
+                <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+                  {summaryValue}
+                </p>
+              </div>
             </div>
+          )}
+
+          <div>
+            <h4 className="text-sm font-semibold text-foreground mb-2">Uploaded File</h4>
+            {fileUrl ? (
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-muted/30 hover:bg-muted transition-colors text-sm font-medium text-foreground"
+              >
+                <FileText className="w-4 h-4 text-[#1E73A8] dark:text-[#2CA6C4]" />
+                Open {config.title} File
+                <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+              </a>
+            ) : (
+              <p className="text-sm text-muted-foreground">No file uploaded.</p>
+            )}
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold text-foreground mb-2">Uploaded PDF</h4>
-            <a
-              href={abstract.abstract_file_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-muted/30 hover:bg-muted transition-colors text-sm font-medium text-foreground"
-            >
-              <FileText className="w-4 h-4 text-[#1E73A8] dark:text-[#2CA6C4]" />
-              Open PDF Abstract
-              <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
-            </a>
+            <h4 className="text-sm font-semibold text-foreground mb-2">Review Notes</h4>
+            <textarea
+              value={reviewNotes}
+              onChange={(e) => setReviewNotes(e.target.value)}
+              placeholder="Add review notes (optional)..."
+              rows={3}
+              disabled={submission.status !== 'pending'}
+              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none disabled:opacity-60"
+            />
           </div>
 
-          {abstract.status === 'pending' && (
+          {submission.status !== 'pending' && submission.reviewed_by && (
+            <div className="p-3 rounded-xl bg-muted/50 border border-border text-sm text-muted-foreground">
+              Reviewed by <span className="font-medium text-foreground">{submission.reviewed_by}</span>
+              {submission.reviewed_at && (
+                <> on {new Date(submission.reviewed_at).toLocaleDateString('en-US', {
+                  year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
+                })}</>
+              )}
+            </div>
+          )}
+
+          {submission.status === 'pending' && (
             <div className="space-y-3 pt-2">
               <p className="text-sm font-semibold text-foreground">Review Decision</p>
               {actionError && (
@@ -147,17 +191,6 @@ export function AbstractReviewModal({
                   Reject
                 </button>
               </div>
-            </div>
-          )}
-
-          {abstract.status !== 'pending' && abstract.reviewed_by && (
-            <div className="p-3 rounded-xl bg-muted/50 border border-border text-sm text-muted-foreground">
-              Reviewed by <span className="font-medium text-foreground">{abstract.reviewed_by}</span>
-              {abstract.reviewed_at && (
-                <> on {new Date(abstract.reviewed_at).toLocaleDateString('en-US', {
-                  year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
-                })}</>
-              )}
             </div>
           )}
         </div>

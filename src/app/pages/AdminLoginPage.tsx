@@ -24,7 +24,7 @@ export function AdminLoginPage() {
 
     try {
       await loginAdmin(email.trim(), password);
-      navigate('/admin/abstracts', { replace: true });
+      navigate('/admin/submissions', { replace: true });
     } catch (err) {
       if (err instanceof AdminError) {
         setError(err.message);

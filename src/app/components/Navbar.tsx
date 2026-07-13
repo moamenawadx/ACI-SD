@@ -5,7 +5,8 @@ import { Globe, Moon, Sun, Menu, X, User, LayoutDashboard, FileText, Upload, Log
 import { Link, useLocation, useNavigate } from 'react-router';
 import { cn } from './ui/utils';
 import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
-import { sessionService } from '../../services/sessionService';
+import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
 
 const sectionLinks = [
   { key: 'home', section: 'home' },
@@ -20,8 +21,9 @@ const sectionLinks = [
 
 function ParticipantDropdown() {
   const [open, setOpen] = useState(false);
+  const [participantInfo, setParticipantInfo] = useState<{ fullName: string; regNumber: string } | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const session = sessionService.getSession();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,18 +36,35 @@ function ParticipantDropdown() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!user) {
+      setParticipantInfo(null);
+      return;
+    }
+    supabase
+      .from('registrations')
+      .select('full_name, registration_number')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setParticipantInfo({ fullName: data.full_name, regNumber: data.registration_number });
+        }
+      });
+  }, [user]);
+
   const handleNavigation = (path: string) => {
     setOpen(false);
     navigate(path);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setOpen(false);
-    sessionService.logout();
+    await supabase.auth.signOut();
     navigate('/');
   };
 
-  if (!session) {
+  if (!user) {
     return (
       <Tooltip>
         <TooltipTrigger asChild>
@@ -90,8 +109,10 @@ function ParticipantDropdown() {
                 <User className="w-5 h-5 text-white" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-foreground truncate">{session.fullName}</p>
-                <p className="text-xs text-muted-foreground font-mono mt-0.5 truncate">{session.registrationNumber}</p>
+                <p className="text-sm font-bold text-foreground truncate">{participantInfo?.fullName ?? user.email}</p>
+                {participantInfo?.regNumber && (
+                  <p className="text-xs text-muted-foreground font-mono mt-0.5 truncate">{participantInfo.regNumber}</p>
+                )}
               </div>
             </div>
           </div>
@@ -140,11 +161,29 @@ export function Navbar() {
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const session = sessionService.getSession();
+  const { user } = useAuth();
+  const [mobileParticipantInfo, setMobileParticipantInfo] = useState<{ fullName: string; regNumber: string } | null>(null);
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname, hash]);
+
+  useEffect(() => {
+    if (!user) {
+      setMobileParticipantInfo(null);
+      return;
+    }
+    supabase
+      .from('registrations')
+      .select('full_name, registration_number')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) {
+          setMobileParticipantInfo({ fullName: data.full_name, regNumber: data.registration_number });
+        }
+      });
+  }, [user]);
 
   const goToSection = (section: string) => {
     setMobileOpen(false);
@@ -172,9 +211,9 @@ export function Navbar() {
     navigate(path);
   };
 
-  const handleMobileLogout = () => {
+  const handleMobileLogout = async () => {
     setMobileOpen(false);
-    sessionService.logout();
+    await supabase.auth.signOut();
     navigate('/');
   };
 
@@ -254,15 +293,17 @@ export function Navbar() {
         )}
       >
         <div className="border-t border-border bg-card px-4 py-4 space-y-1">
-          {session ? (
+          {user ? (
             <>
               <div className="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl bg-muted/50">
                 <div className="size-10 rounded-full bg-gradient-to-br from-[#1E73A8] to-[#2CA6C4] flex items-center justify-center shrink-0">
                   <User className="w-5 h-5 text-white" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-foreground truncate">{session.fullName}</p>
-                  <p className="text-xs text-muted-foreground font-mono truncate">{session.registrationNumber}</p>
+                  <p className="text-sm font-bold text-foreground truncate">{mobileParticipantInfo?.fullName ?? user.email}</p>
+                  {mobileParticipantInfo?.regNumber && (
+                    <p className="text-xs text-muted-foreground font-mono truncate">{mobileParticipantInfo.regNumber}</p>
+                  )}
                 </div>
               </div>
               <button

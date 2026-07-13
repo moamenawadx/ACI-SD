@@ -1,18 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
-  FileText,
-  ExternalLink,
-  Loader2,
-  AlertTriangle,
-  CheckCircle,
-  XCircle,
-  Clock,
+  FileText, ExternalLink, Loader2, AlertTriangle,
+  CheckCircle, XCircle, Clock,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { listAbstracts, updateAbstractStatus } from '../../services/adminService';
-import { adminSessionService } from '../../services/adminSessionService';
-import { AbstractReviewModal } from '../components/admin/AbstractReviewModal';
-import type { AbstractWithParticipant } from '../../services/adminService';
+import { getAdminInfo } from '../../services/adminService';
+import { listSubmissions, updateSubmissionStatus, getSubmissionFileUrl } from '../../services/submissionService';
+import type { SubmissionWithParticipant } from '../../services/submissionService';
+import type { SubmissionType } from '../config/submissionConfig';
+import { SUBMISSION_CONFIGS } from '../config/submissionConfig';
+import { SubmissionReviewModal } from '../components/admin/SubmissionReviewModal';
 
 type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
@@ -29,61 +26,99 @@ const STATUS_CONFIG = {
   rejected: { icon: XCircle, class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' },
 } as const;
 
-export function AdminAbstractsPage() {
-  const [abstracts, setAbstracts] = useState<AbstractWithParticipant[]>([]);
+const SUBMISSION_TYPES: SubmissionType[] = ['abstract', 'poster', 'oral'];
+
+export function AdminSubmissionPage() {
+  const [activeType, setActiveType] = useState<SubmissionType>('abstract');
+  const [submissions, setSubmissions] = useState<SubmissionWithParticipant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('pending');
-  const [selectedAbstract, setSelectedAbstract] = useState<AbstractWithParticipant | null>(null);
-  const session = adminSessionService.getSession();
+  const [selectedSubmission, setSelectedSubmission] = useState<SubmissionWithParticipant | null>(null);
+  const [reviewerName, setReviewerName] = useState('Admin');
+  const [fileUrls, setFileUrls] = useState<Record<string, string>>({});
 
-  const fetchAbstracts = useCallback(async () => {
-    console.log('[AdminAbstractsPage] fetchAbstracts called, filter:', statusFilter);
+  const config = SUBMISSION_CONFIGS[activeType];
+
+  useEffect(() => {
+    getAdminInfo().then((info) => {
+      if (info?.fullName) setReviewerName(info.fullName);
+    });
+  }, []);
+
+  const fetchSubmissions = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await listAbstracts(statusFilter);
-      console.log('[AdminAbstractsPage] listAbstracts returned:', data);
-      console.log('[AdminAbstractsPage] data length:', data?.length);
-      setAbstracts(data);
+      const data = await listSubmissions(activeType, statusFilter);
+      setSubmissions(data);
     } catch (err) {
-      console.error('[AdminAbstractsPage] listAbstracts threw:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load abstracts.');
+      setError(err instanceof Error ? err.message : 'Failed to load submissions.');
     } finally {
       setLoading(false);
     }
-  }, [statusFilter]);
+  }, [activeType, statusFilter]);
 
   useEffect(() => {
-    fetchAbstracts();
-  }, [fetchAbstracts]);
+    fetchSubmissions();
+  }, [fetchSubmissions]);
 
-  const handleStatusChange = async (id: string, status: 'approved' | 'rejected') => {
-    const reviewer = session?.fullName ?? 'Admin';
-    setAbstracts((prev) =>
-      prev.map((ab) =>
-        ab.id === id
-          ? { ...ab, status, reviewed_by: reviewer, reviewed_at: new Date().toISOString() }
-          : ab
-      )
+  useEffect(() => {
+    const generateUrls = async () => {
+      const urls: Record<string, string> = {};
+      for (const s of submissions) {
+        const url = await getSubmissionFileUrl(activeType, s);
+        if (url) urls[s.id] = url;
+      }
+      setFileUrls(urls);
+    };
+    if (submissions.length > 0) generateUrls();
+  }, [submissions, activeType]);
+
+  const handleStatusChange = async (id: string, status: 'approved' | 'rejected', reviewNotes?: string) => {
+    const reviewer = reviewerName;
+    setSubmissions((prev) =>
+      prev.map((s) =>
+        s.id === id
+          ? { ...s, status, reviewed_by: reviewer, reviewed_at: new Date().toISOString(), review_notes: reviewNotes ?? null }
+          : s,
+      ),
     );
-    setSelectedAbstract(null);
+    setSelectedSubmission(null);
     try {
-      await updateAbstractStatus(id, status, reviewer);
-      toast.success(`Abstract ${status === 'approved' ? 'approved' : 'rejected'} successfully.`);
+      await updateSubmissionStatus(activeType, id, status, reviewer, reviewNotes);
+      toast.success(`${config.title} ${status === 'approved' ? 'approved' : 'rejected'} successfully.`);
     } catch {
       toast.error('Failed to update status. Please try again.');
-      fetchAbstracts();
+      fetchSubmissions();
     }
   };
+
+  const summaryColumn = config.summaryColumn;
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-foreground">Abstract Submissions</h2>
+        <h2 className="text-2xl font-bold text-foreground">Submission Management</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Review and manage participant abstract submissions.
+          Review and manage participant submissions.
         </p>
+      </div>
+
+      <div className="flex gap-1 p-1 rounded-xl bg-muted border border-border w-fit">
+        {SUBMISSION_TYPES.map((st) => (
+          <button
+            key={st}
+            onClick={() => { setActiveType(st); setStatusFilter('pending'); }}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              activeType === st
+                ? 'bg-card text-foreground shadow-sm border border-border'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {st === 'abstract' ? 'Abstracts' : st === 'poster' ? 'Posters' : 'Oral Presentations'}
+          </button>
+        ))}
       </div>
 
       <div className="flex gap-1 p-1 rounded-xl bg-muted border border-border w-fit">
@@ -98,11 +133,6 @@ export function AdminAbstractsPage() {
             }`}
           >
             {tab.label}
-            {tab.key === 'pending' && abstracts.length > 0 && statusFilter === 'pending' && (
-              <span className="ml-2 px-1.5 py-0.5 rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-xs">
-                {abstracts.length}
-              </span>
-            )}
           </button>
         ))}
       </div>
@@ -116,14 +146,14 @@ export function AdminAbstractsPage() {
           <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
           <span>{error}</span>
         </div>
-      ) : abstracts.length === 0 ? (
+      ) : submissions.length === 0 ? (
         <div className="text-center py-24">
           <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-40" />
-          <p className="text-lg font-medium text-foreground">No abstracts found</p>
+          <p className="text-lg font-medium text-foreground">No submissions found</p>
           <p className="text-sm text-muted-foreground mt-1">
             {statusFilter === 'pending'
-              ? 'No pending abstracts to review.'
-              : `No ${statusFilter} abstracts.`}
+              ? `No pending ${activeType} submissions to review.`
+              : `No ${statusFilter} ${activeType} submissions.`}
           </p>
         </div>
       ) : (
@@ -137,40 +167,42 @@ export function AdminAbstractsPage() {
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Participant</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Email</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Affiliation</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">Abstract</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">PDF</th>
+                  {summaryColumn && <th className="text-left px-4 py-3 font-medium text-muted-foreground">Summary</th>}
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">File</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Date</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">Review</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {abstracts.map((ab, idx) => {
-                  const statusIcon = STATUS_CONFIG[ab.status];
+                {submissions.map((s, idx) => {
+                  const statusIcon = STATUS_CONFIG[s.status];
                   const Icon = statusIcon.icon;
                   return (
-                    <tr key={ab.id} className="hover:bg-muted/30 transition-colors">
+                    <tr key={s.id} className="hover:bg-muted/30 transition-colors">
                       <td className="px-4 py-3 text-muted-foreground">{idx + 1}</td>
                       <td className="px-4 py-3 font-mono text-xs font-medium text-foreground">
-                        {ab.registrations.registration_number}
+                        {s.registrations.registration_number}
                       </td>
                       <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
-                        {ab.registrations.full_name}
+                        {s.registrations.full_name}
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">
-                        {ab.registrations.email}
+                        {s.registrations.email}
                       </td>
                       <td className="px-4 py-3 text-muted-foreground max-w-[160px] truncate">
-                        {ab.registrations.university_organization}
+                        {s.registrations.university_organization}
                       </td>
-                      <td className="px-4 py-3 max-w-[200px]">
-                        <p className="text-muted-foreground truncate">
-                          {ab.abstract_summary}
-                        </p>
-                      </td>
+                      {summaryColumn && (
+                        <td className="px-4 py-3 max-w-[200px]">
+                          <p className="text-muted-foreground truncate">
+                            {(s[summaryColumn] as string) || ''}
+                          </p>
+                        </td>
+                      )}
                       <td className="px-4 py-3">
                         <a
-                          href={ab.abstract_file_url}
+                          href={fileUrls[s.id] || '#'}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-muted hover:bg-muted/80 transition-colors text-xs font-medium text-foreground"
@@ -183,11 +215,11 @@ export function AdminAbstractsPage() {
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${statusIcon.class}`}>
                           <Icon className="w-3 h-3" />
-                          {ab.status}
+                          {s.status}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">
-                        {new Date(ab.created_at).toLocaleDateString('en-US', {
+                        {new Date(s.created_at).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
                           year: 'numeric',
@@ -195,7 +227,7 @@ export function AdminAbstractsPage() {
                       </td>
                       <td className="px-4 py-3">
                         <button
-                          onClick={() => setSelectedAbstract(ab)}
+                          onClick={() => setSelectedSubmission(s)}
                           className="px-3 py-1.5 rounded-lg bg-[#1E73A8]/10 dark:bg-[#2CA6C4]/10 text-[#1E73A8] dark:text-[#2CA6C4] text-xs font-medium hover:bg-[#1E73A8]/20 dark:hover:bg-[#2CA6C4]/20 transition-colors"
                         >
                           View
@@ -210,10 +242,11 @@ export function AdminAbstractsPage() {
         </div>
       )}
 
-      {selectedAbstract && (
-        <AbstractReviewModal
-          abstract={selectedAbstract}
-          onClose={() => setSelectedAbstract(null)}
+      {selectedSubmission && (
+        <SubmissionReviewModal
+          submission={selectedSubmission}
+          config={config}
+          onClose={() => setSelectedSubmission(null)}
           onStatusChange={handleStatusChange}
         />
       )}

@@ -1,5 +1,4 @@
 import { supabase } from '../lib/supabase';
-import { adminSessionService } from './adminSessionService';
 
 export class AdminError extends Error {
   constructor(message: string, public code?: string) {
@@ -8,93 +7,81 @@ export class AdminError extends Error {
   }
 }
 
-export interface AbstractWithParticipant {
+export interface AdminInfo {
   id: string;
-  registration_id: string;
-  abstract_summary: string;
-  abstract_file_url: string;
-  status: 'pending' | 'approved' | 'rejected';
-  reviewed_by: string | null;
-  reviewed_at: string | null;
-  created_at: string;
-  registrations: {
-    full_name: string;
-    registration_number: string;
-    email: string;
-    university_organization: string;
-  };
+  email: string;
+  fullName: string;
 }
 
-export async function loginAdmin(email: string, password: string): Promise<void> {
-  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+export async function loginAdmin(
+  email: string,
+  password: string,
+): Promise<AdminInfo> {
+  const { data: authData, error: authError } =
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
   if (authError || !authData.user) {
-    throw new AdminError('Invalid email or password.');
+    throw new AdminError(
+      authError?.message || 'Invalid email or password.',
+      authError?.code,
+    );
   }
 
-  const { data: admin, error: adminError } = await supabase
-    .from('admins')
-    .select('*')
+  const { data: reg, error: regError } = await supabase
+    .from('registrations')
+    .select('is_admin, full_name, email')
     .eq('id', authData.user.id)
     .single();
 
-  if (adminError || !admin) {
+  if (regError || !reg?.is_admin) {
     await supabase.auth.signOut();
     throw new AdminError('This account does not have admin privileges.');
   }
 
-  adminSessionService.login({
-    id: admin.id,
-    email: admin.email,
-    fullName: admin.full_name,
-  });
+  return {
+    id: authData.user.id,
+    email: reg.email,
+    fullName: reg.full_name,
+  };
+}
+
+export async function getAdminInfo(): Promise<AdminInfo | null> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const user = sessionData?.session?.user;
+  if (!user) return null;
+
+  const { data } = await supabase
+    .from('registrations')
+    .select('is_admin, full_name, email')
+    .eq('id', user.id)
+    .single();
+
+  if (!data?.is_admin) return null;
+
+  return {
+    id: user.id,
+    email: data.email,
+    fullName: data.full_name,
+  };
 }
 
 export async function logoutAdmin(): Promise<void> {
   await supabase.auth.signOut();
-  adminSessionService.logout();
 }
 
-export async function listAbstracts(
-  statusFilter?: string
-): Promise<AbstractWithParticipant[]> {
-  const { data, error } = await supabase
-    .from('abstract_submissions')
-    .select('*');
+export async function checkIsAdmin(): Promise<boolean> {
+  const { data: sessionData } = await supabase.auth.getSession();
+  const user = sessionData?.session?.user;
+  if (!user) return false;
 
-  console.log('[TEST] error:', error);
-  console.log('[TEST] data:', data);
-  console.log('[TEST] data is array?', Array.isArray(data));
-  console.log('[TEST] data length:', data?.length);
+  const { data } = await supabase
+    .from('registrations')
+    .select('is_admin')
+    .eq('id', user.id)
+    .single();
 
-  if (error) {
-    throw new AdminError(`Failed to load abstracts: ${error.message}`, error.code);
-  }
-
-  return (data as AbstractWithParticipant[]) ?? [];
-}
-
-export async function updateAbstractStatus(
-  id: string,
-  status: 'approved' | 'rejected',
-  reviewedBy: string
-): Promise<void> {
-  const { error } = await supabase
-    .from('abstract_submissions')
-    .update({
-      status,
-      reviewed_by: reviewedBy,
-      reviewed_at: new Date().toISOString(),
-    })
-    .eq('id', id);
-
-  if (error) {
-    throw new AdminError(
-      `Failed to update abstract status: ${error.message}`,
-      error.code
-    );
-  }
+  return data?.is_admin === true;
 }

@@ -12,6 +12,8 @@ export interface RegistrationFormData {
   country: string;
 
   email: string;
+  password: string;
+  confirmPassword: string;
   mobilePhone: string;
   whatsapp: string;
   postalAddress: string;
@@ -60,6 +62,8 @@ export const initialFormData: RegistrationFormData = {
   country: '',
 
   email: '',
+  password: '',
+  confirmPassword: '',
   mobilePhone: '',
   whatsapp: '',
   postalAddress: '',

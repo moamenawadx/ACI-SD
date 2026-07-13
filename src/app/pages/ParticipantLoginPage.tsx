@@ -1,22 +1,21 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { LogIn, Loader2, AlertTriangle, Eye, EyeOff, BadgeCheck } from 'lucide-react';
-import { loginParticipant, ParticipantError } from '../../services/participantService';
-import { sessionService } from '../../services/sessionService';
+import { LogIn, Loader2, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import { supabase } from '../../lib/supabase';
 
 export function ParticipantLoginPage() {
   const navigate = useNavigate();
-  const [registrationNumber, setRegistrationNumber] = useState('');
-  const [passportId, setPassportId] = useState('');
-  const [showPassport, setShowPassport] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!registrationNumber.trim() || !passportId.trim()) {
-      setError('Please enter both your Registration Number and National ID / Passport Number.');
+    if (!email.trim() || !password) {
+      setError('Please enter your email and password.');
       return;
     }
 
@@ -24,18 +23,25 @@ export function ParticipantLoginPage() {
     setError(null);
 
     try {
-      const session = await loginParticipant(
-        registrationNumber.trim(),
-        passportId.trim()
-      );
-      sessionService.login(session);
-      navigate('/participant', { replace: true });
-    } catch (err) {
-      if (err instanceof ParticipantError) {
-        setError(err.message);
-      } else {
-        setError('An unexpected error occurred. Please try again.');
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (signInError) {
+        if (signInError.message === 'Invalid login credentials') {
+          setError('Invalid email or password. Please check your credentials and try again.');
+        } else if (signInError.message?.includes('Email not confirmed')) {
+          setError('Please confirm your email address before logging in. Check your inbox.');
+        } else {
+          setError(signInError.message);
+        }
+        return;
       }
+
+      navigate('/participant', { replace: true });
+    } catch {
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -52,7 +58,7 @@ export function ParticipantLoginPage() {
             Participant Portal
           </h1>
           <p className="text-muted-foreground text-sm mt-2">
-            Sign in with your Registration Number and National ID / Passport Number
+            Sign in with your email and password
           </p>
         </div>
 
@@ -60,13 +66,13 @@ export function ParticipantLoginPage() {
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Registration Number
+                Email
               </label>
               <input
-                type="text"
-                value={registrationNumber}
-                onChange={(e) => { setRegistrationNumber(e.target.value); setError(null); }}
-                placeholder="e.g. ACI-2027-000123"
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(null); }}
+                placeholder="Enter your email address"
                 className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 disabled={loading}
               />
@@ -74,23 +80,23 @@ export function ParticipantLoginPage() {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                National ID / Passport Number
+                Password
               </label>
               <div className="relative">
                 <input
-                  type={showPassport ? 'text' : 'password'}
-                  value={passportId}
-                  onChange={(e) => { setPassportId(e.target.value); setError(null); }}
-                  placeholder="Enter your National ID or Passport Number"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => { setPassword(e.target.value); setError(null); }}
+                  placeholder="Enter your password"
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-12 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                   disabled={loading}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassport(!showPassport)}
+                  onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showPassport ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
@@ -114,7 +120,7 @@ export function ParticipantLoginPage() {
                 </>
               ) : (
                 <>
-                  <BadgeCheck className="w-4 h-4" />
+                  <LogIn className="w-4 h-4" />
                   Login
                 </>
               )}

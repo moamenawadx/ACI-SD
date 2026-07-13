@@ -4,7 +4,7 @@ import { DashboardHeader } from '../components/participant/DashboardHeader';
 import { WelcomeCard } from '../components/participant/WelcomeCard';
 import { RegistrationCard } from '../components/participant/RegistrationCard';
 import { RegistrationDetailsModal } from '../components/participant/RegistrationDetailsModal';
-import { AbstractUploadCard } from '../components/participant/AbstractUploadCard';
+import { SubmissionUploadCard } from '../components/participant/SubmissionUploadCard';
 
 export function ParticipantDashboardPage() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
@@ -18,7 +18,13 @@ export function ParticipantDashboardPage() {
           <RegistrationCard onViewDetails={() => setShowRegistrationModal(true)} />
         </div>
         <div id="upload-abstract">
-          <AbstractUploadCard />
+          <SubmissionUploadCard type="abstract" />
+        </div>
+        <div id="upload-poster">
+          <SubmissionUploadCard type="poster" />
+        </div>
+        <div id="upload-oral">
+          <SubmissionUploadCard type="oral" />
         </div>
       </div>
 

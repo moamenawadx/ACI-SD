@@ -1,40 +1,65 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import {
   FileText, Upload, CheckCircle, Loader2, AlertTriangle, X,
-  Clock, XCircle,
+  Clock, XCircle, Download,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { sessionService } from '../../../services/sessionService';
-import { uploadAbstractPdf, submitAbstract, UploadError } from '../../../services/uploadService';
-import { getAbstractSubmission } from '../../../services/participantService';
-import type { AbstractSubmissionRecord } from '../../../services/participantService';
+import { useAuth } from '../../contexts/AuthContext';
+import type { SubmissionType } from '../../config/submissionConfig';
+import { getConfig } from '../../config/submissionConfig';
+import {
+  getSubmission,
+  submitSubmission,
+  replaceSubmission,
+  getSubmissionFileUrl,
+  SubmissionError,
+} from '../../../services/submissionService';
+import type { SubmissionRecord } from '../../../services/submissionService';
+
+interface SubmissionUploadCardProps {
+  type: SubmissionType;
+}
 
 const STATUS_CONFIG = {
-  pending: { icon: Clock, label: 'Pending Review', class: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' },
-  approved: { icon: CheckCircle, label: 'Approved', class: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' },
-  rejected: { icon: XCircle, label: 'Rejected', class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' },
+  pending: {
+    icon: Clock,
+    label: 'Pending Review',
+    class: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400',
+  },
+  approved: {
+    icon: CheckCircle,
+    label: 'Approved',
+    class: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400',
+  },
+  rejected: {
+    icon: XCircle,
+    label: 'Rejected',
+    class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400',
+  },
 } as const;
 
-export function AbstractUploadCard() {
-  const session = sessionService.getSession();
+export function SubmissionUploadCard({ type }: SubmissionUploadCardProps) {
+  const { user } = useAuth();
+  const config = getConfig(type);
   const [summary, setSummary] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [checkingExisting, setCheckingExisting] = useState(true);
-  const [existingSubmission, setExistingSubmission] = useState<AbstractSubmissionRecord | null>(null);
+  const [existingSubmission, setExistingSubmission] = useState<SubmissionRecord | null>(null);
   const [submittedAt, setSubmittedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // TODO: Security — getAbstractSubmission and submitAbstract rely on anon-key queries
-  //       with no RLS enforcement. See participantService.ts TODOs for migration options.
+  const userId = user?.id;
+
   useEffect(() => {
-    if (!session) {
+    if (!userId) {
       setCheckingExisting(false);
       return;
     }
-    getAbstractSubmission(session.id)
+    getSubmission(type, userId)
       .then((record) => {
         if (record) {
           setExistingSubmission(record);
@@ -43,9 +68,15 @@ export function AbstractUploadCard() {
       })
       .catch(() => {})
       .finally(() => setCheckingExisting(false));
-  }, [session]);
+  }, [type, userId]);
 
-  if (!session) return null;
+  useEffect(() => {
+    if (existingSubmission) {
+      getSubmissionFileUrl(type, existingSubmission).then(setFileUrl).catch(() => setFileUrl(null));
+    }
+  }, [existingSubmission, type]);
+
+  if (!userId) return null;
 
   if (checkingExisting) {
     return (
@@ -59,13 +90,14 @@ export function AbstractUploadCard() {
     const selected = e.target.files?.[0];
     if (!selected) return;
 
-    if (selected.type !== 'application/pdf') {
-      toast.error('Only PDF files are accepted.');
+    const ext = '.' + selected.name.split('.').pop()?.toLowerCase();
+    if (!config.acceptedExtensions.includes(ext)) {
+      toast.error(`Accepted formats: ${config.acceptedExtensions.join(', ')}`);
       return;
     }
 
-    if (selected.size > 10 * 1024 * 1024) {
-      toast.error('File size must not exceed 10 MB.');
+    if (selected.size > config.maxFileSize * 1024 * 1024) {
+      toast.error(`File size must not exceed ${config.maxFileSize} MB.`);
       return;
     }
 
@@ -79,12 +111,12 @@ export function AbstractUploadCard() {
   };
 
   const handleSubmit = async () => {
-    if (!summary.trim()) {
-      setError('Please enter an abstract summary.');
+    if (config.showSummary && !summary.trim()) {
+      setError('Please enter a summary.');
       return;
     }
     if (!file) {
-      setError('Please upload a PDF file.');
+      setError('Please upload a file.');
       return;
     }
 
@@ -92,15 +124,20 @@ export function AbstractUploadCard() {
     setError(null);
 
     try {
-      const fileUrl = await uploadAbstractPdf(session.id, file);
-      await submitAbstract(session.id, summary.trim(), fileUrl);
-      const record = await getAbstractSubmission(session.id);
-      if (record) setExistingSubmission(record);
+      if (existingSubmission) {
+        await replaceSubmission(type, existingSubmission.id, userId, file, config.showSummary ? summary.trim() : undefined);
+        const record = await getSubmission(type, userId);
+        if (record) setExistingSubmission(record);
+      } else {
+        await submitSubmission(type, userId, file, config.showSummary ? summary.trim() : undefined);
+        const record = await getSubmission(type, userId);
+        if (record) setExistingSubmission(record);
+      }
       setSubmittedAt(new Date().toISOString());
       setSubmitted(true);
-      toast.success('Abstract submitted successfully.');
+      toast.success(`${config.title} submitted successfully.`);
     } catch (err) {
-      if (err instanceof UploadError) {
+      if (err instanceof SubmissionError) {
         setError(err.message);
       } else {
         setError('An unexpected error occurred. Please try again.');
@@ -114,10 +151,10 @@ export function AbstractUploadCard() {
   const displayStatus = submission?.status ?? 'pending';
   const statusInfo = STATUS_CONFIG[displayStatus];
   const StatusIcon = statusInfo.icon;
+  const summaryValue = config.summaryColumn && submission ? (submission[config.summaryColumn] as string) : '';
 
-  if (submitted) {
-    const date = submission?.created_at ?? submittedAt ?? '';
-    const url = submission?.abstract_file_url ?? '';
+
+  if (submitted && existingSubmission) {
     return (
       <div className="rounded-2xl bg-card border border-border shadow-sm p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200">
         <div className="text-center">
@@ -134,41 +171,73 @@ export function AbstractUploadCard() {
               : 'text-yellow-600 dark:text-yellow-400'
             }`} />
           </div>
-          <h3 className="text-xl font-bold text-foreground mb-2">Abstract Submitted</h3>
-          {date && (
+          <h3 className="text-xl font-bold text-foreground mb-2">{config.title} Submitted</h3>
+          {submission.created_at && (
             <p className="mt-4 text-sm text-muted-foreground">
-              Submission Date: {new Date(date).toLocaleDateString('en-US', {
+              Submission Date: {new Date(submission.created_at).toLocaleDateString('en-US', {
                 year: 'numeric', month: 'long', day: 'numeric',
               })}
             </p>
           )}
-          {url && (
-            <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-card border border-border">
-              <FileText className="w-3.5 h-3.5 text-muted-foreground" />
+          {submission.updated_at && (
+            <p className="text-sm text-muted-foreground">
+              Last Updated: {new Date(submission.updated_at).toLocaleDateString('en-US', {
+                year: 'numeric', month: 'long', day: 'numeric',
+              })}
+            </p>
+          )}
+          <div className="mt-4 flex items-center justify-center gap-3">
+            {fileUrl && (
               <a
-                href={url}
+                href={fileUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-primary transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-card border border-border text-foreground hover:text-primary transition-colors"
               >
-                View PDF
+                <FileText className="w-3.5 h-3.5 text-muted-foreground" />
+                View File
               </a>
-            </div>
-          )}
+            )}
+            {fileUrl && (
+              <a
+                href={fileUrl}
+                download
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-card border border-border text-foreground hover:text-primary transition-colors"
+              >
+                <Download className="w-3.5 h-3.5 text-muted-foreground" />
+                Download
+              </a>
+            )}
+          </div>
           <div className={`mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${statusInfo.class}`}>
             <StatusIcon className="w-3.5 h-3.5" />
             {statusInfo.label}
           </div>
+          {summaryValue && (
+            <div className="mt-4 max-w-md mx-auto">
+              <p className="text-xs text-muted-foreground mb-1">Summary</p>
+              <p className="text-sm text-foreground leading-relaxed">{summaryValue}</p>
+            </div>
+          )}
+          {submission.review_notes && (
+            <div className="mt-4 p-3 rounded-xl bg-muted/50 border border-border max-w-md mx-auto">
+              <p className="text-xs text-muted-foreground mb-1">Review Notes</p>
+              <p className="text-sm text-foreground leading-relaxed">{submission.review_notes}</p>
+            </div>
+          )}
           {displayStatus === 'rejected' && (
             <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-              Your abstract was not approved. Please contact the conference organizers for more information.
+              Your {type} was not approved. Please contact the conference organizers for more information.
             </p>
           )}
-          {displayStatus !== 'rejected' && (
+          {displayStatus === 'pending' && (
             <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-              {displayStatus === 'pending'
-                ? 'Your abstract is pending review. You will be notified once it has been reviewed.'
-                : 'Your abstract has been approved. You will receive further instructions.'}
+              Your {type} is pending review. You will be notified once it has been reviewed.
+            </p>
+          )}
+          {displayStatus === 'approved' && (
+            <p className="mt-6 text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+              Your {type} has been approved. You will receive further instructions.
             </p>
           )}
         </div>
@@ -183,33 +252,35 @@ export function AbstractUploadCard() {
           <FileText className="w-6 h-6 text-[#1E73A8] dark:text-[#2CA6C4]" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-foreground">Abstract Submission</h3>
+          <h3 className="text-lg font-bold text-foreground">{config.title}</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            Submit your abstract for the conference.
+            {config.description}
           </p>
         </div>
       </div>
 
       <div className="space-y-5">
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-2">
-            Abstract Summary
-          </label>
-          <textarea
-            value={summary}
-            onChange={(e) => { setSummary(e.target.value); setError(null); }}
-            placeholder="Enter your abstract summary..."
-            rows={5}
-            className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
-          />
-        </div>
+        {config.showSummary && (
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">
+              {config.summaryLabel}
+            </label>
+            <textarea
+              value={summary}
+              onChange={(e) => { setSummary(e.target.value); setError(null); }}
+              placeholder={config.summaryPlaceholder}
+              rows={5}
+              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all resize-none"
+            />
+          </div>
+        )}
 
         <div>
           <label className="block text-sm font-medium text-foreground mb-2">
-            Upload PDF
+            Upload File
           </label>
           <p className="text-xs text-muted-foreground mb-3">
-            Accepted format: PDF only. Maximum file size: 10 MB.
+            Accepted formats: {config.acceptedExtensions.join(', ')}. Maximum file size: {config.maxFileSize} MB.
           </p>
 
           {!file ? (
@@ -221,11 +292,13 @@ export function AbstractUploadCard() {
               <p className="text-sm text-muted-foreground">
                 Click to upload or drag and drop
               </p>
-              <p className="text-xs text-muted-foreground mt-1">PDF only, up to 10 MB</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {config.acceptedExtensions.join(', ')}, up to {config.maxFileSize} MB
+              </p>
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".pdf,application/pdf"
+                accept={config.acceptedExtensions.join(',')}
                 onChange={handleFileChange}
                 className="hidden"
               />
@@ -269,7 +342,7 @@ export function AbstractUploadCard() {
           ) : (
             <>
               <Upload className="w-4 h-4" />
-              Submit Abstract
+              Submit {config.title}
             </>
           )}
         </button>

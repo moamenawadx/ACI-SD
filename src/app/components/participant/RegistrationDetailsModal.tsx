@@ -1,10 +1,5 @@
 import { X, Loader2, AlertTriangle } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
-import type { RegistrationRecord } from '../../../services/participantService';
-import { getParticipantRegistration } from '../../../services/participantService';
-import { sessionService } from '../../../services/sessionService';
-
-const FETCH_TIMEOUT = 15000;
+import { useParticipant } from '../../contexts/ParticipantContext';
 
 interface RegistrationDetailsModalProps {
   open: boolean;
@@ -31,54 +26,7 @@ function DetailSection({ title, children }: { title: string; children: React.Rea
 }
 
 export function RegistrationDetailsModal({ open, onClose }: RegistrationDetailsModalProps) {
-  const [data, setData] = useState<RegistrationRecord | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const session = sessionService.getSession();
-    if (!open || !session) {
-      setLoading(false);
-      return;
-    }
-
-    let cancelled = false;
-    const timeout = setTimeout(() => {
-      if (!cancelled) {
-        cancelled = true;
-        console.error('RegistrationDetailsModal timeout: request exceeded 15s');
-        setError('Request timed out. Please try again.');
-        setLoading(false);
-      }
-    }, FETCH_TIMEOUT);
-
-    setLoading(true);
-    setError(null);
-    setData(null);
-
-    getParticipantRegistration(session.id)
-      .then((result) => {
-        if (!cancelled) {
-          setData(result);
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) {
-          console.error('RegistrationDetailsModal fetch error:', err);
-          setError(err.message || 'Failed to load registration details.');
-          setLoading(false);
-        }
-      })
-      .finally(() => {
-        clearTimeout(timeout);
-      });
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
-    };
-  }, [open]);
+  const { participant, loading } = useParticipant();
 
   if (!open) return null;
 
@@ -101,67 +49,67 @@ export function RegistrationDetailsModal({ open, onClose }: RegistrationDetailsM
             <div className="flex items-center justify-center py-16">
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
             </div>
-          ) : error ? (
-            <div className="flex items-start gap-2 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-sm text-red-700 dark:text-red-400">
-              <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
-              <span>{error}</span>
-            </div>
-          ) : data ? (
+          ) : participant ? (
             <div className="space-y-4">
               <DetailSection title="Personal Information">
-                <DetailRow label="Title" value={data.title} />
-                <DetailRow label="Full Name" value={data.full_name} />
-                <DetailRow label="Name on Certificate" value={data.name_on_certificate} />
-                <DetailRow label="Gender" value={data.gender} />
-                <DetailRow label="Nationality" value={data.nationality} />
-                <DetailRow label="Passport / National ID" value={data.passport_or_national_id} />
+                <DetailRow label="Title" value={participant.title} />
+                <DetailRow label="Full Name" value={participant.full_name} />
+                <DetailRow label="Name on Certificate" value={participant.name_on_certificate} />
+                <DetailRow label="Gender" value={participant.gender} />
+                <DetailRow label="Nationality" value={participant.nationality} />
+                <DetailRow label="Passport / National ID" value={participant.passport_or_national_id} />
               </DetailSection>
 
               <DetailSection title="Affiliation">
-                <DetailRow label="University / Organization" value={data.university_organization} />
-                <DetailRow label="Faculty / Department" value={data.faculty_department} />
-                <DetailRow label="Position" value={data.position} />
-                <DetailRow label="Country" value={data.country} />
+                <DetailRow label="University / Organization" value={participant.university_organization} />
+                <DetailRow label="Faculty / Department" value={participant.faculty_department} />
+                <DetailRow label="Position" value={participant.position} />
+                <DetailRow label="Country" value={participant.country} />
               </DetailSection>
 
               <DetailSection title="Contact Information">
-                <DetailRow label="Email" value={data.email} />
-                <DetailRow label="Mobile Phone" value={data.mobile_phone} />
-                <DetailRow label="WhatsApp" value={data.whatsapp} />
-                <DetailRow label="Postal Address" value={data.postal_address} />
+                <DetailRow label="Email" value={participant.email} />
+                <DetailRow label="Mobile Phone" value={participant.mobile_phone} />
+                <DetailRow label="WhatsApp" value={participant.whatsapp} />
+                <DetailRow label="Postal Address" value={participant.postal_address} />
               </DetailSection>
 
               <DetailSection title="Participation Details">
-                <DetailRow label="Attendance Mode" value={data.attendance_mode} />
-                <DetailRow label="Participation Type" value={data.participation_type} />
-                <DetailRow label="Paper Title" value={data.paper_title} />
-                <DetailRow label="Conference Topic" value={data.conference_topic === 'Other' ? data.conference_topic_other : data.conference_topic} />
+                <DetailRow label="Attendance Mode" value={participant.attendance_mode} />
+                <DetailRow label="Participation Type" value={participant.participation_type} />
+                <DetailRow label="Paper Title" value={participant.paper_title} />
+                <DetailRow label="Conference Topic" value={participant.conference_topic === 'Other' ? participant.conference_topic_other : participant.conference_topic} />
               </DetailSection>
 
               <DetailSection title="Accommodation & Travel">
-                <DetailRow label="Room Type" value={data.room_type} />
-                <DetailRow label="Check-in" value={data.check_in} />
-                <DetailRow label="Check-out" value={data.check_out} />
-                <DetailRow label="Roommate" value={data.roommate} />
-                <DetailRow label="Arrival Airport" value={data.arrival_airport} />
-                <DetailRow label="Arrival Date" value={data.arrival_date} />
-                <DetailRow label="Arrival Time" value={data.arrival_time} />
-                <DetailRow label="Departure Date" value={data.departure_date} />
-                <DetailRow label="Departure Time" value={data.departure_time} />
-                <DetailRow label="Invitation Letter" value={data.invitation_letter} />
-                <DetailRow label="Visa Support Letter" value={data.visa_support_letter} />
-                <DetailRow label="Other Requirements" value={data.other_requirements} />
+                <DetailRow label="Room Type" value={participant.room_type} />
+                <DetailRow label="Check-in" value={participant.check_in} />
+                <DetailRow label="Check-out" value={participant.check_out} />
+                <DetailRow label="Roommate" value={participant.roommate} />
+                <DetailRow label="Arrival Airport" value={participant.arrival_airport} />
+                <DetailRow label="Arrival Date" value={participant.arrival_date} />
+                <DetailRow label="Arrival Time" value={participant.arrival_time} />
+                <DetailRow label="Departure Date" value={participant.departure_date} />
+                <DetailRow label="Departure Time" value={participant.departure_time} />
+                <DetailRow label="Invitation Letter" value={participant.invitation_letter} />
+                <DetailRow label="Visa Support Letter" value={participant.visa_support_letter} />
+                <DetailRow label="Other Requirements" value={participant.other_requirements} />
               </DetailSection>
 
               <DetailSection title="Payment Information">
-                <DetailRow label="Registration Category" value={data.registration_category} />
-                <DetailRow label="Payment Method" value={data.payment_method} />
-                <DetailRow label="Amount Paid" value={data.amount_paid} />
-                <DetailRow label="Payment Date" value={data.payment_date} />
-                <DetailRow label="Transaction Reference" value={data.transaction_reference} />
+                <DetailRow label="Registration Category" value={participant.registration_category} />
+                <DetailRow label="Payment Method" value={participant.payment_method} />
+                <DetailRow label="Amount Paid" value={participant.amount_paid} />
+                <DetailRow label="Payment Date" value={participant.payment_date} />
+                <DetailRow label="Transaction Reference" value={participant.transaction_reference} />
               </DetailSection>
             </div>
-          ) : null}
+          ) : (
+            <div className="flex items-start gap-2 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-sm text-red-700 dark:text-red-400">
+              <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>Could not load registration details.</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

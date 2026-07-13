@@ -1,13 +1,15 @@
 import { LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router';
-import { sessionService } from '../../../services/sessionService';
+import { useAuth } from '../../contexts/AuthContext';
+import { useParticipant } from '../../contexts/ParticipantContext';
 
 export function DashboardHeader() {
   const navigate = useNavigate();
-  const session = sessionService.getSession();
+  const { signOut } = useAuth();
+  const { participant } = useParticipant();
 
-  const handleLogout = () => {
-    sessionService.logout();
+  const handleLogout = async () => {
+    await signOut();
     navigate('/participant/login');
   };
 
@@ -18,7 +20,7 @@ export function DashboardHeader() {
           Participant Portal
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Welcome back, {session?.fullName}
+          Welcome back, {participant?.full_name}
         </p>
       </div>
       <button

@@ -4,10 +4,14 @@ import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import type { RegistrationFormData } from '../../types/registration';
 import { initialFormData, stepLabels } from '../../types/registration';
-import { TextInput, SelectInput, RadioGroup, CheckboxField, TextArea, CountrySelect, PhoneInput, DatePicker } from './FormFields';
+import { TextInput, SelectInput, RadioGroup, CheckboxField, TextArea, DatePicker, FieldWrapper } from './FormFields';
+import { PhoneInput, isValidPhoneNumber } from './PhoneInput';
+import { CountrySelectField } from './CountrySelectField';
+import { PasswordStrengthInput } from './PasswordStrengthInput';
+import { ReceiptUpload } from './ReceiptUpload';
 import {
   titles, genders, attendanceModes, participationTypes,
-  conferenceTopics, roomTypes, registrationCategories, countries
+  conferenceTopics, roomTypes, registrationCategories,
 } from '../../types/registration';
 import { submitRegistration, RegistrationError } from '../../../services/registrationService';
 
@@ -118,7 +122,7 @@ function Step1PersonalInfo({ data, update, errors }: StepProps) {
           error={errors.gender}
           required
         />
-        <CountrySelect
+        <CountrySelectField
           label="Nationality"
           value={data.nationality}
           onChange={(v) => update({ nationality: v })}
@@ -168,7 +172,7 @@ function Step2Affiliation({ data, update, errors }: StepProps) {
           error={errors.position}
           required
         />
-        <CountrySelect
+        <CountrySelectField
           label="Country"
           value={data.country}
           onChange={(v) => update({ country: v })}
@@ -182,7 +186,7 @@ function Step2Affiliation({ data, update, errors }: StepProps) {
 
 function Step3ContactInfo({ data, update, errors }: StepProps) {
   return (
-    <StepCard title="Contact Information">
+    <StepCard title="Contact Information & Account">
       <div className="grid sm:grid-cols-2 gap-5">
         <div className="sm:col-span-2">
           <TextInput
@@ -195,6 +199,20 @@ function Step3ContactInfo({ data, update, errors }: StepProps) {
             required
           />
         </div>
+        <PasswordStrengthInput
+          label="Password"
+          value={data.password}
+          onChange={(v) => update({ password: v })}
+          error={errors.password}
+          required
+        />
+        <PasswordStrengthInput
+          label="Confirm Password"
+          value={data.confirmPassword}
+          onChange={(v) => update({ confirmPassword: v })}
+          error={errors.confirmPassword}
+          required
+        />
         <PhoneInput
           label="Mobile Phone"
           value={data.mobilePhone}
@@ -397,7 +415,7 @@ function Step6Payment({ data, update, errors }: StepProps) {
 
         <SelectInput
           label="Payment Method"
-          options={paymentMethods}
+          options={[{ value: 'bank-transfer', label: 'Bank Transfer' }]}
           placeholder="Select payment method"
           value={data.paymentMethod}
           onChange={(e) => update({ paymentMethod: e.target.value })}
@@ -433,12 +451,11 @@ function Step6Payment({ data, update, errors }: StepProps) {
           required
         />
 
-        <FileUpload
+        <ReceiptUpload
           label="Upload Receipt"
           value={data.receiptFile}
           onChange={(f) => update({ receiptFile: f })}
           error={errors.receiptFile as string}
-          accept=".pdf,.jpg,.jpeg,.png"
           maxSize={10}
           required
         />
@@ -538,6 +555,8 @@ function Step7ReviewSubmit({ data, update, errors }: StepProps) {
   );
 }
 
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
+
 function validateStep(step: number, data: RegistrationFormData): Record<string, string> {
   const errors: Record<string, string> = {};
 
@@ -561,18 +580,28 @@ function validateStep(step: number, data: RegistrationFormData): Record<string, 
     case 2: {
       if (!data.email.trim()) {
         errors.email = 'Email is required';
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-        errors.email = 'Invalid email format';
+      } else if (!EMAIL_REGEX.test(data.email)) {
+        errors.email = 'Please enter a valid email address';
       }
-      if (!data.mobilePhone.trim()) {
+      if (!data.password) {
+        errors.password = 'Password is required';
+      } else if (data.password.length < 8) {
+        errors.password = 'Password must be at least 8 characters';
+      }
+      if (!data.confirmPassword) {
+        errors.confirmPassword = 'Please confirm your password';
+      } else if (data.password !== data.confirmPassword) {
+        errors.confirmPassword = 'Passwords do not match';
+      }
+      if (!data.mobilePhone) {
         errors.mobilePhone = 'Mobile phone is required';
-      } else if (!/^[\d\s+()-]{7,20}$/.test(data.mobilePhone)) {
-        errors.mobilePhone = 'Invalid phone number';
+      } else if (!isValidPhoneNumber(data.mobilePhone)) {
+        errors.mobilePhone = 'Please enter a valid phone number';
       }
-      if (!data.whatsapp.trim()) {
+      if (!data.whatsapp) {
         errors.whatsapp = 'WhatsApp is required';
-      } else if (!/^[\d\s+()-]{7,20}$/.test(data.whatsapp)) {
-        errors.whatsapp = 'Invalid WhatsApp number';
+      } else if (!isValidPhoneNumber(data.whatsapp)) {
+        errors.whatsapp = 'Please enter a valid WhatsApp number';
       }
       break;
     }
@@ -687,7 +716,7 @@ export function RegistrationWizard() {
         </div>
 
         <p className="text-muted-foreground leading-relaxed max-w-lg mx-auto mb-8 text-sm">
-          Please save this Registration Number. You will use it together with your National ID / Passport Number to access your Participant Portal.
+          Please save this Registration Number. Use your email and password to log in to the Participant Portal.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -706,7 +735,7 @@ export function RegistrationWizard() {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#1E73A8] to-[#2CA6C4] text-white font-medium hover:shadow-lg hover:shadow-primary/20 transition-all"
           >
             <ClipboardCheck className="w-4 h-4" />
-            Go to Participant Portal
+            Go to Login
           </button>
         </div>
       </div>
