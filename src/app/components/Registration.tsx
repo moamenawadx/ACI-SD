@@ -25,10 +25,10 @@ interface FeeRow {
 }
 
 const feeRows: FeeRow[] = [
-  { key: 'reg_category_full_paper', egpDouble: '10,500', egpSingle: '13,500', egpOnline: '5,000', usdDouble: '1000', usdSingle: '1,200', usdOnline: '600' },
-  { key: 'reg_category_abstract', egpDouble: '9,500', egpSingle: '12,500', egpOnline: '4,000', usdDouble: '850', usdSingle: '1,050', usdOnline: '500' },
-  { key: 'reg_category_attendee', egpDouble: '9,000', egpSingle: '12,000', egpOnline: '3,000', usdDouble: '750', usdSingle: '950', usdOnline: '400' },
-  { key: 'reg_category_accompanying', egpDouble: '9,000', egpSingle: null, egpOnline: null, usdDouble: '700', usdSingle: null, usdOnline: null }
+  { key: 'reg_category_full_paper', egpDouble: '10,500', egpSingle: '13,500', egpOnline: '5,000', usdDouble: '900', usdSingle: '1,100', usdOnline: '500' },
+  { key: 'reg_category_abstract', egpDouble: '9,500', egpSingle: '12,500', egpOnline: '4,000', usdDouble: '750', usdSingle: '950', usdOnline: '400' },
+  { key: 'reg_category_attendee', egpDouble: '9,000', egpSingle: '12,000', egpOnline: '3,000', usdDouble: '650', usdSingle: '850', usdOnline: '300' },
+  { key: 'reg_category_accompanying', egpDouble: '9,000', egpSingle: null, egpOnline: null, usdDouble: '600', usdSingle: null, usdOnline: null }
 ];
 
 const includes = [
