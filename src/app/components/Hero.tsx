@@ -54,7 +54,7 @@ export function Hero() {
               t('hero_subtitle')
             )}
           </p>
-          <p className="text-lg md:text-xl text-muted-foreground font-semibold mb-8 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-foreground font-semibold mb-8 leading-relaxed max-w-3xl mx-auto">
             {language === 'en' ? (
               <>11<sup>th</sup> International Symposium of Mediterranean Group on Pesticide Research</>
             ) : (
