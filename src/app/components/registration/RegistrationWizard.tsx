@@ -585,8 +585,6 @@ function validateStep(step: number, data: RegistrationFormData): Record<string, 
       }
       if (!data.password) {
         errors.password = 'Password is required';
-      } else if (data.password.length < 8) {
-        errors.password = 'Password must be at least 8 characters';
       }
       if (!data.confirmPassword) {
         errors.confirmPassword = 'Please confirm your password';

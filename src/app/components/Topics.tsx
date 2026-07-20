@@ -14,11 +14,11 @@ export function Topics() {
   const uiText = {
     en: {
       sectionIntro:
-        'Explore the conference themes through focused subtopics that connect scientific advances with industrial and societal impact.',
+        'Among others, the following research areas will be covered during the Conference as oral or poster presentations.',
     },
     ar: {
       sectionIntro:
-        'استكشف محاور المؤتمر من خلال موضوعات فرعية متخصصة تربط بين التقدم العلمي والأثر الصناعي والمجتمعي.',
+        'من بين المواضيع الأخرى، سيتم تغطية مجالات البحث التالية خلال المؤتمر كعروض شفهية أو ملصقات.',
     }
   };
 
@@ -49,8 +49,7 @@ export function Topics() {
         { enTitle: 'Nanomedicine and Pharmaceutical Nanotechnology', arTitle: 'الطب النانوي والتقنيات النانوية الدوائية' },
         { enTitle: 'Nano-fabrication and Scalable Production Techniques', arTitle: 'تقنيات التصنيع النانوي وأساليب الإنتاج القابلة للتوسع' },
         { enTitle: 'Industrial Applications of Nanotechnology', arTitle: 'التطبيقات الصناعية لتكنولوجيا النانو' },
-        { enTitle: 'Nanomaterials, Nanoscale Design, and Nano-enabled Systems', arTitle: 'المواد النانوية والتصميم على المقياس النانوي والأنظمة المعتمدة على النانو' },
-        { enTitle: 'Nanotechnology for Sustainable Agriculture and Plant Protection', arTitle: 'تكنولوجيا النانو من أجل الزراعة المستدامة وحماية النباتات' }
+        { enTitle: 'Nanomaterials, Nanoscale Design, and Nano-enabled Systems', arTitle: 'المواد النانوية والتصميم على المقياس النانوي والأنظمة المعتمدة على النانو' }
       ]
     },
     {
@@ -73,12 +72,11 @@ export function Topics() {
       details: [
         { enTitle: 'Pesticide Chemistry and Formulation Technologies', arTitle: 'كيمياء المبيدات وتقنيات التحضير' },
         { enTitle: 'Agrochemical Innovation and Sustainable Agriculture', arTitle: 'الابتكار في الكيمياء الزراعية والزراعة المستدامة' },
+        { enTitle: 'Nanotechnology for Sustainable Agriculture and Plant Protection', arTitle: 'تكنولوجيا النانو من أجل الزراعة المستدامة وحماية النباتات' },
         { enTitle: 'Smart and Precision Agriculture Systems', arTitle: 'أنظمة الزراعة الذكية والدقيقة' },
-        { enTitle: 'AI Applications in Crop Monitoring and Agricultural Management', arTitle: 'تطبيقات الذكاء الاصطناعي في مراقبة المحاصيل والإدارة الزراعية' },
         { enTitle: 'Plant Bioactive Compounds, Functional Biomolecules, and Agro-biotechnology', arTitle: 'المركبات النشطة بيولوجيًا والجزيئات الوظيفية والتكنولوجيا الحيوية الزراعية' },
         { enTitle: 'Integrated and Eco-friendly Agricultural Practices', arTitle: 'الممارسات الزراعية المتكاملة والصديقة للبيئة' },
-        { enTitle: 'Environmental Fate, Toxicology, and Risk Assessment', arTitle: 'المصير البيئي والسمية وتقييم المخاطر' },
-        { enTitle: 'Innovation and Entrepreneurship in Agri-food Technologies', arTitle: 'الابتكار وريادة الأعمال في تقنيات الأغذية الزراعية' }
+        { enTitle: 'Environmental Fate, Toxicology, and Risk Assessment', arTitle: 'المصير البيئي والسمية وتقييم المخاطر' }
       ]
     },
     {
@@ -86,13 +84,7 @@ export function Topics() {
       title: t('topic_ai'),
       description: t('topic_ai_desc'),
       color: 'from-[#1E73A8] to-[#0A2647]',
-      details: [
-        { enTitle: 'AI-driven Materials & Drug Discovery', arTitle: 'الاكتشاف المدعوم بالذكاء الاصطناعي للمواد والأدوية' },
-        { enTitle: 'Smart Manufacturing & Industry 4.0', arTitle: 'التصنيع الذكي والثورة الصناعية الرابعة' },
-        { enTitle: 'Digitalization of Chemical and Industrial Systems', arTitle: 'الرقمنة في الأنظمة الكيميائية والصناعية' },
-        { enTitle: 'Integration of Smart Monitoring', arTitle: 'تكامل أنظمة المراقبة الذكية' },
-        { enTitle: 'Data Analytics, Modeling, and Process Optimization', arTitle: 'تحليل البيانات والنمذجة وتحسين العمليات' }
-      ]
+      details: []
     },
     {
       icon: TreePine,
@@ -128,7 +120,8 @@ export function Topics() {
         { enTitle: 'Startups & Deep-tech Innovation', arTitle: 'الشركات الناشئة والابتكار في التقنيات العميقة' },
         { enTitle: 'Industry–Academia Collaboration', arTitle: 'التعاون بين الصناعة والأوساط الأكاديمية' },
         { enTitle: 'Applied Research & Market-driven Solutions', arTitle: 'البحوث التطبيقية والحلول الموجهة للسوق' },
-        { enTitle: 'Student Innovation & Prototype Development', arTitle: 'ابتكار الطلاب وتطوير النماذج الأولية' }
+        { enTitle: 'Student Innovation & Prototype Development', arTitle: 'ابتكار الطلاب وتطوير النماذج الأولية' },
+        { enTitle: 'Innovation and Entrepreneurship in Agri-food Technologies', arTitle: 'الابتكار وريادة الأعمال في تقنيات الأغذية الزراعية' }
       ]
     }
   ];

@@ -13,19 +13,7 @@ interface PasswordStrengthInputProps {
 
 function getStrength(password: string): { score: number; label: string; color: string } {
   if (!password) return { score: 0, label: '', color: 'bg-muted' };
-
-  let score = 0;
-  if (password.length >= 8) score += 25;
-  if (password.length >= 12) score += 10;
-  if (/[a-z]/.test(password)) score += 15;
-  if (/[A-Z]/.test(password)) score += 15;
-  if (/[0-9]/.test(password)) score += 15;
-  if (/[^a-zA-Z0-9]/.test(password)) score += 20;
-
-  if (score < 30) return { score, label: 'Weak', color: 'bg-red-500' };
-  if (score < 50) return { score, label: 'Fair', color: 'bg-orange-500' };
-  if (score < 70) return { score, label: 'Good', color: 'bg-yellow-500' };
-  return { score: Math.min(score, 100), label: 'Strong', color: 'bg-green-500' };
+  return { score: 100, label: 'Strong', color: 'bg-green-500' };
 }
 
 export function PasswordStrengthInput({

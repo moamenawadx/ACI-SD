@@ -11,10 +11,7 @@ const objectives = [
   'about_objective_2',
   'about_objective_3',
   'about_objective_4',
-  'about_objective_5',
-  'about_objective_6',
-  'about_objective_7',
-  'about_objective_8'
+  'about_objective_5'
 ];
 
 export function About() {

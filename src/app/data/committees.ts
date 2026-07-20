@@ -58,8 +58,8 @@ export const organizingCommitteeMembers: CommitteeMember[] = [
   { name: 'Prof. Ibrahim Al-Fahham', institution: '', country: 'Egypt', image: '/committee/Prof. Ibrahim Al-Fahham.jpg' },
   { name: 'Prof. Mohamed Ramadan', institution: '', country: 'Egypt', image: '/committee/Prof. Mohamed Ramadan.jpeg' },
   { name: 'Prof. Sami Fattouch', institution: '', country: 'Tunisia', image: '/committee/Prof. Sami Fattouch.jpg' },
-  { name: 'Assoc. prof. Marwa Mostafa Abdel-Ati', institution: '', country: 'Egypt', image: committeePortrait },
-  { name: 'Dr. Bassem Nashaat Zakher', institution: '', country: 'Egypt', image: committeePortrait },
+  { name: 'Assoc. Prof. Marwa Mostafa Abdel-Ati', institution: '', country: 'Egypt', image: committeePortrait },
+  { name: 'Dr. Bassem Nashaat Zakher', institution: '', country: 'Egypt', image: '/committee/Dr. Bassem Nashaat Zakher.jpeg' },
   { name: 'Prof. Alaa Arafa Badr', institution: '', country: 'Egypt', image: '/committee/Prof. Alaa Arafa Badr.jpg' },
   { name: 'Prof. Rachid SALGHI', institution: '', country: 'Morocco', image: '/committee/Prof. Rachid SALGHI.jpg' },
   { name: 'Prof. Alberto Angioni', institution: '', country: 'Italy', image: '/committee/Prof. Alberto Angioni.png' },
@@ -67,9 +67,11 @@ export const organizingCommitteeMembers: CommitteeMember[] = [
 ];
 
 export const scientificCommitteeMembers: CommitteeMember[] = [
+  { name: 'Prof. Michelangelo Anastassiades', institution: '', country: 'Germany', image: committeePortrait },
   { name: 'Prof. Qusay F. Alsalhy', institution: '', country: 'Iraq', image: '/committee/Prof. Qusay F. Alsalhy.jpg' },
   { name: 'Prof. Urania Menkissoglu-Spiroudi', institution: '', country: 'Greece', image: '/committee/Prof. Urania Menkissoglu-Spiroudi.jpg' },
   { name: 'Prof. Mohamed Vall El Mami', institution: '', country: 'Mauritania', image: committeePortrait },
+  { name: 'Prof. Antonio Valverde García', institution: '', country: 'Spain', image: '/committee/Prof. Antonio Valverde.jpg' },
   { name: 'Prof. Hussein Darwish', institution: '', country: 'Egypt', image: '/committee/Prof. Hussein Darwish.jpg' },
   { name: 'Prof. Alessandro Atzei', institution: '', country: 'Italy', image: '/committee/Prof. Alessandro Atzei.png' },
   { name: 'Prof. Mohamed Mostafa Elsayed', institution: '', country: 'Egypt', image: committeePortrait },
@@ -90,10 +92,9 @@ export const scientificCommitteeMembers: CommitteeMember[] = [
   { name: 'Dr. Amir Bertone Gebara', institution: '', country: 'Brazil', image: committeePortrait },
   { name: 'Prof. Aly A. Aly', institution: '', country: 'Egypt', image: committeePortrait },
   { name: 'Prof. Jean Marc Chovelon', institution: '', country: 'France', image: committeePortrait },
-  { name: 'Prof. Antonio Valverde García', institution: '', country: 'Spain', image: '/committee/Prof. Antonio Valverde.jpg' },
   { name: 'Prof. Ntalli Nikoletta', institution: '', country: 'Greece', image: committeePortrait },
+  { name: 'Prof. Khalil Abdelrazek Khalil', institution: '', country: 'UAE', image: committeePortrait },
   { name: 'Prof. Abderrahim Hormatallah', institution: '', country: 'Morocco', image: '/committee/Prof. Abderrahim Hormatallah.jpg' },
-  { name: 'Prof. Michelangelo Anastassiades', institution: '', country: 'Germany', image: committeePortrait },
   { name: 'Prof. Zsofia KOVACS', institution: '', country: 'Hungary', image: committeePortrait },
   { name: 'Prof. Nafissa Soudani', institution: '', country: 'Algeria', image: '/committee/Prof. Nafissa Soudani.jpg' },
   { name: 'Prof. Mariateresa Russo', institution: '', country: 'Italy', image: committeePortrait },
@@ -107,9 +108,9 @@ export const scientificCommitteeMembers: CommitteeMember[] = [
   { name: 'Prof. Djilani G. Amara', institution: '', country: 'Algeria', image: '/committee/Prof. Djilani G. Amara.jpg' },
   { name: 'Prof. Nour Elhouda Mekhadmi', institution: '', country: 'Algeria', image: committeePortrait },
   { name: 'Prof. Majdeddin Al Ghadban', institution: '', country: 'Libya', image: committeePortrait },
-  { name: 'Prof. Yasser Khadra', institution: '', country: 'Syria', image: committeePortrait },
+  { name: 'Prof. Yasser KHADRA', institution: '', country: 'Syria', image: committeePortrait },
   { name: 'Prof. Hamza Hammadi', institution: '', country: 'Tunisia', image: committeePortrait },
+  { name: 'Prof. Halim Hammi', institution: '', country: 'Tunisia', image: '/committee/Prof. Halim Hammi .jpeg' },
   { name: 'Prof. Mounir FERHI', institution: '', country: 'Tunisia', image: committeePortrait },
-  { name: 'Prof. Khalil Abdelrazek Khalil', institution: '', country: 'UAE', image: committeePortrait },
   { name: 'Prof. Sakina Mohamed Ahmed', institution: '', country: 'Sudan', image: committeePortrait }
 ];

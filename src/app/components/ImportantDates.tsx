@@ -5,10 +5,10 @@ export function ImportantDates() {
   const { t } = useLanguage();
 
   const dates = [
-    { icon: FileText, label: t('date_submission'), date: '30 August 2026', color: 'from-[#F2B21A] to-[#2CA6C4]' },
-    { icon: CheckCircle, label: t('date_acceptance'), date: '30 September 2026', color: 'from-[#2CA6C4] to-[#35B0B7]' },
-    { icon: Upload, label: t('date_final_paper'), date: '30 October 2026', color: 'from-[#1E73A8] to-[#2CA6C4]' },
-    { icon: Calendar, label: t('date_registration'), date: '30 November 2026', color: 'from-[#146C43] to-[#2CA6C4]' }
+    { icon: FileText, label: t('date_submission'), date: '30 September 2026', color: 'from-[#F2B21A] to-[#2CA6C4]' },
+    { icon: CheckCircle, label: t('date_acceptance'), date: '30 October 2026', color: 'from-[#2CA6C4] to-[#35B0B7]' },
+    { icon: Upload, label: t('date_final_paper'), date: '30 November 2026', color: 'from-[#1E73A8] to-[#2CA6C4]' },
+    { icon: Calendar, label: t('date_registration'), date: '15 December 2026', color: 'from-[#146C43] to-[#2CA6C4]' }
   ];
 
   return (

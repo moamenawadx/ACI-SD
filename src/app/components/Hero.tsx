@@ -49,14 +49,14 @@ export function Hero() {
           </div>
           <p className="text-xl md:text-2xl text-foreground font-semibold mb-4 leading-relaxed max-w-4xl mx-auto drop-shadow-lg">
             {language === 'en' ? (
-              <>1<sup>st</sup> International Conference on Advancing Chemistry and Innovation Towards the Future: Nanotechnology, Artificial Intelligence, and Entrepreneurship for Sustainable Development &ldquo;ACI-SD 2027&rdquo;</>
+              <>1<sup>st</sup> International Conference on Advancing Chemistry and Innovation Towards the Future: Nanotechnology, Artificial Intelligence, and Entrepreneurship for Sustainable Development (ACI-SD 2027)</>
             ) : (
               t('hero_subtitle')
             )}
           </p>
           <p className="text-lg md:text-xl text-foreground font-semibold mb-8 leading-relaxed max-w-3xl mx-auto">
             {language === 'en' ? (
-              <>11<sup>th</sup> International Symposium of Mediterranean Group on Pesticide Research</>
+              <>11<sup>th</sup> International Symposium of the Mediterranean Group of Pesticide Research</>
             ) : (
               t('hero_subtitle2')
             )}

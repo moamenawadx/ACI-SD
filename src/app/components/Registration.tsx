@@ -10,8 +10,7 @@ import {
   ChevronDown,
   Copy,
   Check,
-  RotateCcw,
-  ArrowRightLeft
+  RotateCcw
 } from 'lucide-react';
 
 interface FeeRow {
@@ -19,32 +18,28 @@ interface FeeRow {
   egpDouble: string;
   egpSingle: string | null;
   egpOnline: string | null;
-  usdDouble: string;
-  usdSingle: string | null;
-  usdOnline: string | null;
+  eurDouble: string;
+  eurSingle: string | null;
+  eurOnline: string | null;
 }
 
 const feeRows: FeeRow[] = [
-  { key: 'reg_category_full_paper', egpDouble: '10,500', egpSingle: '13,500', egpOnline: '5,000', usdDouble: '900', usdSingle: '1,100', usdOnline: '500' },
-  { key: 'reg_category_abstract', egpDouble: '9,500', egpSingle: '12,500', egpOnline: '4,000', usdDouble: '750', usdSingle: '950', usdOnline: '400' },
-  { key: 'reg_category_attendee', egpDouble: '9,000', egpSingle: '12,000', egpOnline: '3,000', usdDouble: '650', usdSingle: '850', usdOnline: '300' },
-  { key: 'reg_category_accompanying', egpDouble: '9,000', egpSingle: null, egpOnline: null, usdDouble: '600', usdSingle: null, usdOnline: null }
+  { key: 'reg_category_full_paper', egpDouble: '10,500', egpSingle: '13,500', egpOnline: '5,000', eurDouble: '450', eurSingle: '550', eurOnline: '200' },
+  { key: 'reg_category_abstract', egpDouble: '9,500', egpSingle: '12,500', egpOnline: '4,000', eurDouble: '400', eurSingle: '500', eurOnline: '175' },
+  { key: 'reg_category_attendee', egpDouble: '9,000', egpSingle: '12,000', egpOnline: '3,000', eurDouble: '350', eurSingle: '450', eurOnline: '150' },
+  { key: 'reg_category_accompanying', egpDouble: '9,000', egpSingle: null, egpOnline: null, eurDouble: '350', eurSingle: null, eurOnline: null }
 ];
 
 const includes = [
-  'reg_include_welcome_packet',
   'reg_include_publication',
+  'reg_include_accommodation',
   'reg_include_sessions',
-  'reg_include_proceedings',
   'reg_include_program',
-  'reg_include_gift_bag',
-  'reg_include_certificate',
-  'reg_include_accommodation'
+  'reg_include_gift_bag'
 ];
 
 const notIncludes = [
-  'reg_not_include_visa',
-  'reg_not_include_transport',
+  'reg_not_include_visa_transport',
   'reg_not_include_one_author',
   'reg_not_include_additional_authors'
 ];
@@ -162,13 +157,13 @@ export function Registration() {
                   colSpan={2}
                   className="sticky top-0 px-4 py-3 text-center font-semibold whitespace-nowrap min-w-[200px]"
                 >
-                  {t('reg_header_usd_onsite')}
+                  {t('reg_header_eur_onsite')}
                 </th>
                 <th
                   rowSpan={2}
                   className="sticky top-0 px-4 py-3 text-center font-semibold whitespace-nowrap min-w-[120px]"
                 >
-                  {t('reg_header_usd_online')}
+                  {t('reg_header_eur_online')}
                 </th>
               </tr>
               <tr className="bg-gradient-to-r from-[#1E73A8]/90 to-[#2CA6C4]/90 text-white/90">
@@ -198,9 +193,9 @@ export function Registration() {
                   <td className="px-4 py-4 text-center text-foreground">{renderCell(row.egpDouble)}</td>
                   <td className="px-4 py-4 text-center text-foreground">{renderCell(row.egpSingle)}</td>
                   <td className="px-4 py-4 text-center text-foreground">{renderCell(row.egpOnline)}</td>
-                  <td className="px-4 py-4 text-center text-foreground">{renderCell(row.usdDouble)}</td>
-                  <td className="px-4 py-4 text-center text-foreground">{renderCell(row.usdSingle)}</td>
-                  <td className="px-4 py-4 text-center text-foreground">{renderCell(row.usdOnline)}</td>
+                  <td className="px-4 py-4 text-center text-foreground">{renderCell(row.eurDouble)}</td>
+                  <td className="px-4 py-4 text-center text-foreground">{renderCell(row.eurSingle)}</td>
+                  <td className="px-4 py-4 text-center text-foreground">{renderCell(row.eurOnline)}</td>
                 </tr>
               ))}
             </tbody>
@@ -329,16 +324,6 @@ export function Registration() {
           </ul>
           <p className="text-sm text-muted-foreground leading-relaxed mt-5 text-justify">
             {t('reg_cancellation_note')}
-          </p>
-        </div>
-
-        <div className="p-6 rounded-2xl bg-card border border-border shadow-sm mb-12">
-          <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-            <ArrowRightLeft className="w-5 h-5 text-[#2CA6C4]" />
-            {t('reg_transfer_title')}
-          </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed text-justify">
-            {t('reg_transfer_desc')}
           </p>
         </div>
 
